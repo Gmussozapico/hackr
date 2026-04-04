@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hackr — Deja de aplazar. Construye ahora.</title>
+  <meta name="description" content="Hackr reúne a emprendedores como vos para sesiones intensivas de construcción. Sin excusas. Con otros. Con deadline." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #12121a;
+      --bg3: #1a1a26;
+      --accent: #7c3aed;
+      --accent2: #a855f7;
+      --accent3: #f97316;
+      --text: #f1f0ff;
+      --text2: #a09db8;
+      --border: rgba(124,58,237,0.25);
+      --glow: rgba(124,58,237,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem; font-weight: 700;
+      background: linear-gradient(135deg, #a855f7, #f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .nav-cta {
+      background: var(--accent);
+      color: #fff; border: none; cursor: pointer;
+      padding: 0.5rem 1.25rem; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 600;
+      transition: background 0.2s, transform 0.1s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 900px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -20%; right: -10%;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(249,115,22,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(124,58,237,0.15);
+      border: 1px solid var(--border);
+      color: var(--accent2);
+      padding: 0.35rem 1rem; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+      animation: fadeDown 0.6s ease both;
+    }
+    .badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent3);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900; line-height: 1.05; letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.6s 0.1s ease both;
+    }
+    h1 .gradient {
+      background: linear-gradient(135deg, #a855f7 0%, #f97316 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    h1 .underline-accent {
+      position: relative; display: inline-block;
+    }
+    h1 .underline-accent::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #7c3aed, #f97316);
+      border-radius: 2px;
+    }
+
+    .hero-sub {
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      color: var(--text2); max-width: 600px;
+      margin-bottom: 3rem; line-height: 1.7;
+      animation: fadeDown 0.6s 0.2s ease both;
+    }
+
+    .waitlist-form {
+      display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeDown 0.6s 0.3s ease both;
+    }
+    .waitlist-form input[type="email"] {
+      padding: 0.85rem 1.25rem; border-radius: 10px;
+      background: var(--bg2); color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 1rem; width: 300px; max-width: 100%;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .waitlist-form input[type="email"]:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.2);
+    }
+    .btn-primary {
+      padding: 0.85rem 1.75rem; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      color: #fff; border: none; cursor: pointer;
+      font-size: 1rem; font-weight: 700;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(124,58,237,0.35);
+      white-space: nowrap;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.45); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .form-feedback {
+      margin-top: 1rem; font-size: 0.9rem; min-height: 1.4rem;
+      animation: fadeDown 0.3s ease both;
+    }
+    .form-feedback.success { color: #4ade80; }
+    .form-feedback.error { color: #f87171; }
+
+    .hero-stats {
+      display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center;
+      margin-top: 3.5rem;
+      animation: fadeDown 0.6s 0.4s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 2rem; font-weight: 800;
+      background: linear-gradient(135deg, #a855f7, #f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--text2); margin-top: 0.1rem; letter-spacing: 0.04em; text-transform: uppercase; }
+
+    /* ── HOW IT WORKS ── */
+    section { padding: 6rem 1.5rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .section-subtitle { font-size: 1.1rem; color: var(--text2); max-width: 560px; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .step-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent2);
+      box-shadow: 0 12px 40px rgba(124,58,237,0.15);
+    }
+    .step-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .step-card:hover::before { opacity: 1; }
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 700; color: var(--accent2);
+      letter-spacing: 0.1em; margin-bottom: 1.25rem;
+    }
+    .step-icon {
+      font-size: 2.25rem; margin-bottom: 1rem; display: block;
+    }
+    .step-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .step-card p { color: var(--text2); font-size: 0.95rem; line-height: 1.65; }
+
+    /* ── WHY HACKR ── */
+    .why-section { background: var(--bg2); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem; margin-top: 3.5rem;
+    }
+    .why-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.75rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .why-card:hover { transform: translateY(-3px); border-color: rgba(249,115,22,0.4); }
+    .why-icon { font-size: 1.8rem; margin-bottom: 0.75rem; display: block; }
+    .why-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .why-card p { color: var(--text2); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── QUOTE ── */
+    .quote-section {
+      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(249,115,22,0.08));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .quote-inner {
+      max-width: 760px; margin: 0 auto; text-align: center;
+    }
+    blockquote {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700; line-height: 1.4; letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    blockquote span {
+      background: linear-gradient(135deg, #a855f7, #f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .quote-caption { color: var(--text2); font-size: 0.9rem; }
+
+    /* ── FAQ ── */
+    .faq-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1rem; max-width: 720px; }
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+    }
+    .faq-question {
+      padding: 1.25rem 1.5rem; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; font-size: 0.975rem;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .faq-question:hover { background: var(--bg3); }
+    .faq-question .chevron {
+      transition: transform 0.25s;
+      color: var(--accent2); font-size: 1.1rem; flex-shrink: 0;
+    }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      color: var(--text2); font-size: 0.93rem; line-height: 1.65;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; padding: 0 1.5rem 1.25rem; }
+    .faq-item.open .chevron { transform: rotate(180deg); }
+
+    /* ── FINAL CTA ── */
+    .cta-section { text-align: center; }
+    .cta-inner { max-width: 640px; margin: 0 auto; }
+    .cta-section h2 {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1.25rem;
+    }
+    .cta-section p { color: var(--text2); font-size: 1.05rem; margin-bottom: 2.5rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 1.5rem; text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text2); font-size: 0.85rem;
+    }
+    footer .footer-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 1rem;
+      background: linear-gradient(135deg, #a855f7, #f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      display: block; margin-bottom: 0.6rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .waitlist-form { flex-direction: column; align-items: stretch; }
+      .waitlist-form input[type="email"] { width: 100%; }
+      .hero-stats { gap: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="logo">hackr_</span>
+    <a href="#waitlist" class="nav-cta">Unirse al waitlist</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="badge">
+      <span class="dot"></span>
+      Próximamente · Plazas limitadas
+    </div>
+    <h1>
+      Deja de <span class="gradient">aplazar</span>.<br />
+      <span class="underline-accent">Construye ahora.</span>
+    </h1>
+    <p class="hero-sub">
+      Hackr reúne a personas con proyectos parados para sesiones intensivas de construcción.
+      Commitéate en vivo, construye en grupo, entregá al final.
+    </p>
+    <form class="waitlist-form" id="heroForm">
+      <input type="email" placeholder="tu@email.com" required id="heroEmail" />
+      <button type="submit" class="btn-primary" id="heroBtn">Quiero un lugar →</button>
+    </form>
+    <div class="form-feedback" id="heroFeedback"></div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">3h</div>
+        <div class="stat-label">Sesiones intensivas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Foco en construir</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Excusas permitidas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="section-inner">
+      <p class="section-label reveal">¿Cómo funciona?</p>
+      <h2 class="section-title reveal">Tres pasos. Sin drama.</h2>
+      <p class="section-subtitle reveal">El formato es simple porque el objetivo también lo es: que al final de la sesión hayas construido algo real.</p>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-num">01 / ANTES</div>
+          <span class="step-icon">🎯</span>
+          <h3>Declarás tu objetivo</h3>
+          <p>Al inicio de cada sesión le decís al grupo qué vas a entregar. Un commit, una landing, una funcionalidad. Específico. Medible. Concreto.</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">02 / DURANTE</div>
+          <span class="step-icon">⚡</span>
+          <h3>Sprint en grupo</h3>
+          <p>Todos construyen en paralelo, cámaras encendidas. El silencio productivo del grupo te mantiene enfocado. No hay lugar para scrollear Instagram.</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">03 / AL FINAL</div>
+          <span class="step-icon">🚀</span>
+          <h3>Mostrás lo que hiciste</h3>
+          <p>5 minutos, cada uno muestra su entrega. No importa si es pequeño. Lo que importa es que existe. El grupo lo ve. Eso cambia todo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY HACKR -->
+  <section class="why-section" id="why">
+    <div class="section-inner">
+      <p class="section-label reveal">¿Por qué funciona?</p>
+      <h2 class="section-title reveal">La procrastinación odia<br />el compromiso público.</h2>
+      <p class="section-subtitle reveal">No es magia. Es psicología aplicada: presión social positiva + deadline real + comunidad que avanza.</p>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <span class="why-icon">🔒</span>
+          <h3>Compromiso público</h3>
+          <p>Cuando le decís a un grupo qué vas a hacer, el costo de no hacerlo sube. Simple y brutalmente efectivo.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-icon">⏱️</span>
+          <h3>Deadline real</h3>
+          <p>Sin fecha límite, nada pasa. Con una sesión programada, de repente encontrás el tiempo que "no tenías".</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-icon">👥</span>
+          <h3>No estás solo</h3>
+          <p>Todos en la sala tienen proyectos parados. El contexto compartido genera energía que no podés recrear solo en tu cuarto.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-icon">📈</span>
+          <h3>Progreso visible</h3>
+          <p>Semana tras semana, tu proyecto crece. La acumulación de sesiones convierte ideas en productos reales.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-icon">🤝</span>
+          <h3>Comunidad que construye</h3>
+          <p>Conocés a gente en el mismo momento del camino. No mentores, no inversores. Builders, como vos.</p>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-icon">🔁</span>
+          <h3>Recurrencia</h3>
+          <p>No es un evento de una vez. Es un ritmo. La recurrencia es lo que convierte intenciones en hábitos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-section">
+    <div class="section-inner quote-inner">
+      <blockquote class="reveal">
+        "La idea más pequeña ejecutada <span>vale infinitamente más</span> que la idea perfecta que sigue en tu cabeza."
+      </blockquote>
+      <p class="quote-caption reveal">El principio que está detrás de cada sesión de Hackr.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-inner">
+      <p class="section-label reveal">Preguntas frecuentes</p>
+      <h2 class="section-title reveal">Lo que todos preguntan.</h2>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <div class="faq-question">¿Necesito saber programar? <span class="chevron">▾</span></div>
+          <div class="faq-answer">No. Hackr es para cualquier tipo de proyecto: apps, negocios, contenido, arte, servicios. Lo único que necesitás es tener algo que querés construir y las ganas de hacerlo.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">¿Cuánto duran las sesiones? <span class="chevron">▾</span></div>
+          <div class="faq-answer">Las sesiones estándar duran 3 horas con estructura clara: 10 min de check-in, 2h 20min de sprint, 30 min de demos. También habrá hackathons de fin de semana para proyectos más ambiciosos.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">¿Con qué frecuencia son las sesiones? <span class="chevron">▾</span></div>
+          <div class="faq-answer">El plan es ofrecer sesiones semanales en horarios fijos para que puedas hacer de esto un hábito, más sesiones extra los fines de semana. Los detalles exactos los vamos a confirmar con la primera comunidad.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">¿Tiene costo? <span class="chevron">▾</span></div>
+          <div class="faq-answer">Las primeras sesiones son gratuitas para los early adopters de la lista. El modelo de negocio final será membresía mensual para acceso ilimitado, pero los que entren ahora van a tener condiciones especiales.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">¿Dónde son las sesiones? <span class="chevron">▾</span></div>
+          <div class="faq-answer">Online por videollamada. Así podés unirte desde donde estés, y podemos armar un grupo con gente de toda la región.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA / WAITLIST -->
+  <section class="cta-section" id="waitlist">
+    <div class="section-inner cta-inner">
+      <h2 class="reveal">¿Listo para<br /><span style="background: linear-gradient(135deg,#a855f7,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">dejar de aplazar?</span></h2>
+      <p class="reveal">Anotate en el waitlist. Las primeras sesiones son para la comunidad fundadora y las plazas son limitadas.</p>
+      <form class="waitlist-form reveal" id="ctaForm" style="justify-content:center">
+        <input type="email" placeholder="tu@email.com" required id="ctaEmail" />
+        <button type="submit" class="btn-primary" id="ctaBtn">Quiero un lugar →</button>
+      </form>
+      <div class="form-feedback" id="ctaFeedback"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">hackr_</span>
+    <p>Construido por builders, para builders. · 2026</p>
+  </footer>
+
+  <script>
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => io.observe(r));
+
+    // ── FAQ accordion ──
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    // ── Waitlist form ──
+    async function submitWaitlist(email, btnEl, feedbackEl) {
+      btnEl.disabled = true;
+      btnEl.textContent = 'Enviando…';
+      feedbackEl.className = 'form-feedback';
+      feedbackEl.textContent = '';
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          feedbackEl.textContent = '🎉 ¡Estás dentro! Te avisamos cuando lancemos.';
+          feedbackEl.className = 'form-feedback success';
+          btnEl.textContent = '✓ Anotado';
+          btnEl.style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
+        } else {
+          feedbackEl.textContent = data.error || 'Algo salió mal. Intentá de nuevo.';
+          feedbackEl.className = 'form-feedback error';
+          btnEl.disabled = false;
+          btnEl.textContent = 'Quiero un lugar →';
+        }
+      } catch {
+        feedbackEl.textContent = 'Error de conexión. Intentá de nuevo.';
+        feedbackEl.className = 'form-feedback error';
+        btnEl.disabled = false;
+        btnEl.textContent = 'Quiero un lugar →';
+      }
+    }
+
+    document.getElementById('heroForm').addEventListener('submit', e => {
+      e.preventDefault();
+      submitWaitlist(document.getElementById('heroEmail').value, document.getElementById('heroBtn'), document.getElementById('heroFeedback'));
+    });
+    document.getElementById('ctaForm').addEventListener('submit', e => {
+      e.preventDefault();
+      submitWaitlist(document.getElementById('ctaEmail').value, document.getElementById('ctaBtn'), document.getElementById('ctaFeedback'));
+    });
+  </script>
+</body>
+</html>
