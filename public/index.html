@@ -328,11 +328,277 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    /* ── CALENDAR SECTION ── */
+    .calendar-section { background: var(--bg3); }
+
+    .calendar-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2.5rem;
+      margin-top: 3.5rem;
+      align-items: start;
+    }
+
+    .cal-mini {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      position: sticky;
+      top: 5.5rem;
+    }
+
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .cal-month-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+
+    .cal-day-name {
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text2);
+      padding: 0.3rem 0 0.6rem;
+      letter-spacing: 0.04em;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      border-radius: 7px;
+      position: relative;
+      color: var(--text2);
+      gap: 2px;
+      transition: background 0.15s;
+    }
+
+    .cal-day.empty { visibility: hidden; }
+
+    .cal-day.today {
+      background: rgba(124,58,237,0.22);
+      color: var(--text);
+      font-weight: 800;
+      border: 1px solid var(--accent);
+    }
+
+    .cal-day.has-session { color: var(--text); font-weight: 600; }
+    .cal-day.has-session:not(.today) { background: rgba(255,255,255,0.04); }
+
+    .cal-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .cal-day.session-weekly .cal-dot { background: var(--accent2); }
+    .cal-day.session-hackathon .cal-dot { background: var(--accent3); }
+
+    .cal-legend {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.75rem;
+      color: var(--text2);
+    }
+
+    .legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-dot.weekly { background: var(--accent2); }
+    .legend-dot.hackathon { background: var(--accent3); }
+
+    /* Session cards */
+    .sessions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .session-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .session-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+      border-radius: 14px 0 0 14px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .session-card.hackathon-card::before { background: var(--accent3); }
+
+    .session-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.12); }
+    .session-card:hover::before { opacity: 1; }
+    .session-card.hackathon-card:hover { box-shadow: 0 8px 32px rgba(249,115,22,0.12); }
+
+    .session-card.happening {
+      border-color: rgba(124,58,237,0.45);
+      box-shadow: 0 0 0 1px rgba(124,58,237,0.15), 0 4px 20px rgba(124,58,237,0.08);
+    }
+    .session-card.happening::before { opacity: 1; }
+
+    .session-date-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 52px;
+      background: var(--bg3);
+      border-radius: 10px;
+      padding: 0.65rem 0.5rem;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .session-date-badge.weekly { border-color: rgba(124,58,237,0.3); }
+    .session-date-badge.hackathon-badge { border-color: rgba(249,115,22,0.3); }
+
+    .s-day {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.1em; color: var(--text2);
+    }
+
+    .s-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem; font-weight: 700;
+      line-height: 1; margin: 0.15rem 0;
+    }
+
+    .session-date-badge.weekly .s-num { color: var(--accent2); }
+    .session-date-badge.hackathon-badge .s-num { color: var(--accent3); }
+
+    .s-month {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.1em; color: var(--text2);
+    }
+
+    .session-info { flex: 1; min-width: 0; }
+
+    .session-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .session-tag {
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; border-radius: 100px;
+    }
+
+    .session-tag.weekly {
+      background: rgba(124,58,237,0.14);
+      color: var(--accent2);
+      border: 1px solid rgba(124,58,237,0.25);
+    }
+
+    .session-tag.hackathon {
+      background: rgba(249,115,22,0.12);
+      color: var(--accent3);
+      border: 1px solid rgba(249,115,22,0.28);
+    }
+
+    .session-status {
+      font-size: 0.73rem; font-weight: 600;
+      padding: 0.2rem 0.6rem; border-radius: 100px;
+    }
+
+    .session-status.live {
+      background: rgba(239,68,68,0.12);
+      color: #f87171;
+      border: 1px solid rgba(239,68,68,0.25);
+    }
+
+    .session-status.open {
+      background: rgba(74,222,128,0.1);
+      color: #4ade80;
+      border: 1px solid rgba(74,222,128,0.22);
+    }
+
+    .session-status.full {
+      background: rgba(160,160,180,0.08);
+      color: var(--text2);
+      border: 1px solid var(--border);
+    }
+
+    .session-title {
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: 0.6rem; color: var(--text);
+    }
+
+    .session-details {
+      display: flex;
+      gap: 1.1rem;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: var(--text2);
+    }
+
+    .cal-disclaimer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.78rem;
+      color: var(--text2);
+      font-style: italic;
+      opacity: 0.55;
+    }
+
     /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .calendar-layout { grid-template-columns: 1fr; }
+      .cal-mini { position: static; }
+    }
+
     @media (max-width: 600px) {
       .waitlist-form { flex-direction: column; align-items: stretch; }
       .waitlist-form input[type="email"] { width: 100%; }
       .hero-stats { gap: 1.75rem; }
+      .session-details { gap: 0.7rem; }
     }
   </style>
 </head>
@@ -446,6 +712,162 @@
           <p>No es un evento de una vez. Es un ritmo. La recurrencia es lo que convierte intenciones en hábitos.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- CALENDAR / PRÓXIMAS SESIONES -->
+  <section class="calendar-section" id="sessions">
+    <div class="section-inner">
+      <p class="section-label reveal">Próximas sesiones</p>
+      <h2 class="section-title reveal">El ritmo que te faltaba.</h2>
+      <p class="section-subtitle reveal">Sesiones semanales fijas + hackathons de fin de semana. Siempre hay una próxima fecha para construir.</p>
+
+      <div class="calendar-layout reveal">
+        <!-- Mini calendar -->
+        <div class="cal-mini">
+          <div class="cal-header">
+            <span class="cal-month-label">ABRIL 2026</span>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day-name">D</div>
+            <div class="cal-day-name">L</div>
+            <div class="cal-day-name">M</div>
+            <div class="cal-day-name">X</div>
+            <div class="cal-day-name">J</div>
+            <div class="cal-day-name">V</div>
+            <div class="cal-day-name">S</div>
+            <!-- Semana 1 (Apr 1 = martes) -->
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day">1</div>
+            <div class="cal-day">2</div>
+            <div class="cal-day today has-session session-weekly">3<span class="cal-dot"></span></div>
+            <div class="cal-day">4</div>
+            <div class="cal-day">5</div>
+            <!-- Semana 2 -->
+            <div class="cal-day">6</div>
+            <div class="cal-day">7</div>
+            <div class="cal-day">8</div>
+            <div class="cal-day">9</div>
+            <div class="cal-day has-session session-weekly">10<span class="cal-dot"></span></div>
+            <div class="cal-day">11</div>
+            <div class="cal-day">12</div>
+            <!-- Semana 3 -->
+            <div class="cal-day">13</div>
+            <div class="cal-day">14</div>
+            <div class="cal-day">15</div>
+            <div class="cal-day">16</div>
+            <div class="cal-day has-session session-weekly">17<span class="cal-dot"></span></div>
+            <div class="cal-day">18</div>
+            <div class="cal-day has-session session-hackathon">19<span class="cal-dot"></span></div>
+            <!-- Semana 4 -->
+            <div class="cal-day has-session session-hackathon">20<span class="cal-dot"></span></div>
+            <div class="cal-day">21</div>
+            <div class="cal-day">22</div>
+            <div class="cal-day">23</div>
+            <div class="cal-day has-session session-weekly">24<span class="cal-dot"></span></div>
+            <div class="cal-day">25</div>
+            <div class="cal-day">26</div>
+            <!-- Semana 5 -->
+            <div class="cal-day">27</div>
+            <div class="cal-day">28</div>
+            <div class="cal-day">29</div>
+            <div class="cal-day">30</div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+          </div>
+          <div class="cal-legend">
+            <span class="legend-item"><span class="legend-dot weekly"></span> Sesión semanal</span>
+            <span class="legend-item"><span class="legend-dot hackathon"></span> Hackathon</span>
+          </div>
+        </div>
+
+        <!-- Session cards -->
+        <div class="sessions-list">
+          <div class="session-card happening">
+            <div class="session-date-badge weekly">
+              <span class="s-day">JUE</span>
+              <span class="s-num">03</span>
+              <span class="s-month">ABR</span>
+            </div>
+            <div class="session-info">
+              <div class="session-meta">
+                <span class="session-tag weekly">Sesión Semanal</span>
+                <span class="session-status live">🔴 Hoy</span>
+              </div>
+              <h3 class="session-title">Sesión #01 — Kick-off de la comunidad</h3>
+              <div class="session-details">
+                <span>🕖 19:00 – 22:00 ART</span>
+                <span>⏱ 3 horas</span>
+                <span>👥 12 / 15 lugares</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="session-card upcoming">
+            <div class="session-date-badge weekly">
+              <span class="s-day">JUE</span>
+              <span class="s-num">10</span>
+              <span class="s-month">ABR</span>
+            </div>
+            <div class="session-info">
+              <div class="session-meta">
+                <span class="session-tag weekly">Sesión Semanal</span>
+                <span class="session-status open">Abierta</span>
+              </div>
+              <h3 class="session-title">Sesión #02</h3>
+              <div class="session-details">
+                <span>🕖 19:00 – 22:00 ART</span>
+                <span>⏱ 3 horas</span>
+                <span>👥 8 / 15 lugares</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="session-card upcoming hackathon-card">
+            <div class="session-date-badge hackathon-badge">
+              <span class="s-day">SÁB</span>
+              <span class="s-num">19</span>
+              <span class="s-month">ABR</span>
+            </div>
+            <div class="session-info">
+              <div class="session-meta">
+                <span class="session-tag hackathon">Hackathon</span>
+                <span class="session-status open">Abierta</span>
+              </div>
+              <h3 class="session-title">Build in 1 Day — de 0 a lanzado</h3>
+              <div class="session-details">
+                <span>🕙 10:00 – 20:00 ART</span>
+                <span>⏱ 10 horas</span>
+                <span>👥 6 / 20 lugares</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="session-card upcoming">
+            <div class="session-date-badge weekly">
+              <span class="s-day">JUE</span>
+              <span class="s-num">24</span>
+              <span class="s-month">ABR</span>
+            </div>
+            <div class="session-info">
+              <div class="session-meta">
+                <span class="session-tag weekly">Sesión Semanal</span>
+                <span class="session-status full">Completa</span>
+              </div>
+              <h3 class="session-title">Sesión #03</h3>
+              <div class="session-details">
+                <span>🕖 19:00 – 22:00 ART</span>
+                <span>⏱ 3 horas</span>
+                <span>👥 15 / 15 lugares</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="cal-disclaimer reveal">* Maqueta ilustrativa — el calendario real se confirma con la comunidad fundadora.</p>
     </div>
   </section>
 
