@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hackr — Deja de aplazar. Construye ahora.</title>
-  <meta name="description" content="Hackr reúne a emprendedores como vos para sesiones intensivas de construcción. Sin excusas. Con otros. Con deadline." />
+  <meta name="description" content="Hackr reúne a personas con proyectos parados para sesiones intensivas de construcción. Sin excusas. Con otros. Con deadline." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -13,673 +13,228 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0f;
-      --bg2: #12121a;
-      --bg3: #1a1a26;
-      --accent: #7c3aed;
-      --accent2: #a855f7;
-      --accent3: #f97316;
-      --text: #f1f0ff;
-      --text2: #a09db8;
-      --border: rgba(124,58,237,0.25);
-      --glow: rgba(124,58,237,0.15);
+      --bg: #0a0a0f; --bg2: #12121a; --bg3: #1a1a26;
+      --accent: #7c3aed; --accent2: #a855f7; --accent3: #f97316;
+      --text: #f1f0ff; --text2: #a09db8;
+      --border: rgba(124,58,237,0.25); --glow: rgba(124,58,237,0.15);
+      --green: #4ade80; --red: #f87171;
     }
 
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.6; }
 
     /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 2rem;
-      background: rgba(10,10,15,0.8);
-      backdrop-filter: blur(16px);
+      background: rgba(10,10,15,0.85); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
-    .logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.4rem; font-weight: 700;
-      background: linear-gradient(135deg, #a855f7, #f97316);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
+    .logo { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; background: linear-gradient(135deg,#a855f7,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-btn {
+      background: transparent; border: 1px solid var(--border); color: var(--text2);
+      padding: 0.5rem 1.1rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
     }
-    .nav-cta {
-      background: var(--accent);
-      color: #fff; border: none; cursor: pointer;
-      padding: 0.5rem 1.25rem; border-radius: 8px;
-      font-size: 0.875rem; font-weight: 600;
-      transition: background 0.2s, transform 0.1s;
-      text-decoration: none;
-    }
+    .nav-btn:hover { border-color: var(--accent2); color: var(--text); }
+    .nav-cta { background: var(--accent); color: #fff; border: none; cursor: pointer; padding: 0.5rem 1.25rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; transition: background 0.2s, transform 0.1s; text-decoration: none; }
     .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 6rem 1.5rem 4rem;
-      position: relative; overflow: hidden;
+    /* User menu */
+    .user-menu { position: relative; }
+    .user-menu-btn {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--text); padding: 0.45rem 0.9rem 0.45rem 0.5rem;
+      border-radius: 10px; cursor: pointer; font-family: inherit;
+      font-size: 0.875rem; font-weight: 600; transition: border-color 0.2s;
     }
-    .hero::before {
-      content: '';
-      position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
-      width: 900px; height: 900px; border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(124,58,237,0.18) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero::after {
-      content: '';
-      position: absolute; bottom: -20%; right: -10%;
-      width: 500px; height: 500px; border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(249,115,22,0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(124,58,237,0.15);
-      border: 1px solid var(--border);
-      color: var(--accent2);
-      padding: 0.35rem 1rem; border-radius: 100px;
-      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
-      margin-bottom: 2rem;
-      animation: fadeDown 0.6s ease both;
-    }
-    .badge .dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent3);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.85); }
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 900; line-height: 1.05; letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      animation: fadeDown 0.6s 0.1s ease both;
-    }
-    h1 .gradient {
-      background: linear-gradient(135deg, #a855f7 0%, #f97316 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    h1 .underline-accent {
-      position: relative; display: inline-block;
-    }
-    h1 .underline-accent::after {
-      content: '';
-      position: absolute; bottom: -4px; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, #7c3aed, #f97316);
-      border-radius: 2px;
-    }
-
-    .hero-sub {
-      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
-      color: var(--text2); max-width: 600px;
-      margin-bottom: 3rem; line-height: 1.7;
-      animation: fadeDown 0.6s 0.2s ease both;
-    }
-
-    .waitlist-form {
-      display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
-      animation: fadeDown 0.6s 0.3s ease both;
-    }
-    .waitlist-form input[type="email"] {
-      padding: 0.85rem 1.25rem; border-radius: 10px;
-      background: var(--bg2); color: var(--text);
-      border: 1px solid var(--border);
-      font-size: 1rem; width: 300px; max-width: 100%;
-      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .waitlist-form input[type="email"]:focus {
-      border-color: var(--accent2);
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.2);
-    }
-    .btn-primary {
-      padding: 0.85rem 1.75rem; border-radius: 10px;
+    .user-menu-btn:hover { border-color: var(--accent2); }
+    .user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent3));
-      color: #fff; border: none; cursor: pointer;
-      font-size: 1rem; font-weight: 700;
-      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
-      box-shadow: 0 4px 24px rgba(124,58,237,0.35);
-      white-space: nowrap;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0;
     }
+    .user-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.4rem;
+      min-width: 180px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+      z-index: 200;
+    }
+    .user-menu.open .user-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+    .user-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.6rem 0.75rem; border: none; background: transparent;
+      color: var(--text2); font-size: 0.875rem; font-family: inherit;
+      cursor: pointer; border-radius: 8px; text-align: left;
+      transition: background 0.15s, color 0.15s;
+    }
+    .user-dropdown button:hover { background: var(--bg3); color: var(--text); }
+    .user-dropdown button.danger:hover { color: var(--red); }
+    .user-dropdown hr { border: none; border-top: 1px solid var(--border); margin: 0.3rem 0; }
+
+    /* ── HERO ── */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 1.5rem 4rem; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(ellipse, rgba(124,58,237,0.18) 0%, transparent 70%); pointer-events: none; }
+    .hero::after { content: ''; position: absolute; bottom: -20%; right: -10%; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(ellipse, rgba(249,115,22,0.1) 0%, transparent 70%); pointer-events: none; }
+    .badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(124,58,237,0.15); border: 1px solid var(--border); color: var(--accent2); padding: 0.35rem 1rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 2rem; animation: fadeDown 0.6s ease both; }
+    .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+    h1 { font-size: clamp(2.8rem,7vw,5.5rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; animation: fadeDown 0.6s 0.1s ease both; }
+    h1 .gradient { background: linear-gradient(135deg,#a855f7 0%,#f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h1 .underline-accent { position: relative; display: inline-block; }
+    h1 .underline-accent::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 4px; background: linear-gradient(90deg,#7c3aed,#f97316); border-radius: 2px; }
+    .hero-sub { font-size: clamp(1.05rem,2.5vw,1.3rem); color: var(--text2); max-width: 600px; margin-bottom: 3rem; line-height: 1.7; animation: fadeDown 0.6s 0.2s ease both; }
+    .waitlist-form { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; animation: fadeDown 0.6s 0.3s ease both; }
+    .waitlist-form input[type="email"] { padding: 0.85rem 1.25rem; border-radius: 10px; background: var(--bg2); color: var(--text); border: 1px solid var(--border); font-size: 1rem; width: 300px; max-width: 100%; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .waitlist-form input[type="email"]:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(124,58,237,0.2); }
+    .btn-primary { padding: 0.85rem 1.75rem; border-radius: 10px; background: linear-gradient(135deg,var(--accent),var(--accent3)); color: #fff; border: none; cursor: pointer; font-size: 1rem; font-weight: 700; transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 24px rgba(124,58,237,0.35); white-space: nowrap; font-family: inherit; }
     .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.45); }
     .btn-primary:active { transform: translateY(0); }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    .form-feedback {
-      margin-top: 1rem; font-size: 0.9rem; min-height: 1.4rem;
-      animation: fadeDown 0.3s ease both;
-    }
-    .form-feedback.success { color: #4ade80; }
-    .form-feedback.error { color: #f87171; }
-
-    .hero-stats {
-      display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center;
-      margin-top: 3.5rem;
-      animation: fadeDown 0.6s 0.4s ease both;
-    }
+    .form-feedback { margin-top: 1rem; font-size: 0.9rem; min-height: 1.4rem; animation: fadeDown 0.3s ease both; }
+    .form-feedback.success { color: var(--green); }
+    .form-feedback.error   { color: var(--red); }
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; margin-top: 3.5rem; animation: fadeDown 0.6s 0.4s ease both; }
     .stat { text-align: center; }
-    .stat-num {
-      font-size: 2rem; font-weight: 800;
-      background: linear-gradient(135deg, #a855f7, #f97316);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .stat-num { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg,#a855f7,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .stat-label { font-size: 0.8rem; color: var(--text2); margin-top: 0.1rem; letter-spacing: 0.04em; text-transform: uppercase; }
 
     /* ── LUCIDE ICONS ── */
-    .icon {
-      display: inline-flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
+    .icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .icon svg { display: block; }
 
-    /* ── HOW IT WORKS ── */
+    /* ── SECTIONS ── */
     section { padding: 6rem 1.5rem; }
     .section-inner { max-width: 1100px; margin: 0 auto; }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--accent2);
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; letter-spacing: -0.02em; line-height: 1.15;
-      margin-bottom: 1.25rem;
-    }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1rem; }
+    .section-title { font-size: clamp(2rem,4vw,3rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.25rem; }
     .section-subtitle { font-size: 1.1rem; color: var(--text2); max-width: 560px; }
 
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem; margin-top: 3.5rem;
-    }
-    .step-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem;
-      position: relative; overflow: hidden;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    }
-    .step-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent2);
-      box-shadow: 0 12px 40px rgba(124,58,237,0.15);
-    }
-    .step-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent3));
-      opacity: 0; transition: opacity 0.2s;
-    }
+    /* ── HOW IT WORKS ── */
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+    .step-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
+    .step-card:hover { transform: translateY(-4px); border-color: var(--accent2); box-shadow: 0 12px 40px rgba(124,58,237,0.15); }
+    .step-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,var(--accent),var(--accent3)); opacity: 0; transition: opacity 0.2s; }
     .step-card:hover::before { opacity: 1; }
-    .step-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem; font-weight: 700; color: var(--accent2);
-      letter-spacing: 0.1em; margin-bottom: 1.25rem;
-    }
-    .step-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem; color: var(--accent2);
-    }
+    .step-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: var(--accent2); letter-spacing: 0.1em; margin-bottom: 1.25rem; }
+    .step-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: var(--accent2); }
     .step-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
     .step-card p { color: var(--text2); font-size: 0.95rem; line-height: 1.65; }
 
     /* ── WHY HACKR ── */
     .why-section { background: var(--bg2); }
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem; margin-top: 3.5rem;
-    }
-    .why-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 14px; padding: 1.75rem;
-      transition: transform 0.2s, border-color 0.2s;
-    }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 1.25rem; margin-top: 3.5rem; }
+    .why-card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; transition: transform 0.2s, border-color 0.2s; }
     .why-card:hover { transform: translateY(-3px); border-color: rgba(249,115,22,0.4); }
-    .why-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 0.85rem; color: var(--accent3);
-    }
+    .why-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; color: var(--accent3); }
     .why-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
     .why-card p { color: var(--text2); font-size: 0.9rem; line-height: 1.6; }
 
     /* ── QUOTE ── */
-    .quote-section {
-      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(249,115,22,0.08));
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .quote-inner {
-      max-width: 760px; margin: 0 auto; text-align: center;
-    }
-    blockquote {
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      font-weight: 700; line-height: 1.4; letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
-    }
-    blockquote span {
-      background: linear-gradient(135deg, #a855f7, #f97316);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .quote-section { background: linear-gradient(135deg,rgba(124,58,237,0.12),rgba(249,115,22,0.08)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .quote-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+    blockquote { font-size: clamp(1.4rem,3vw,2rem); font-weight: 700; line-height: 1.4; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    blockquote span { background: linear-gradient(135deg,#a855f7,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .quote-caption { color: var(--text2); font-size: 0.9rem; }
 
     /* ── FAQ ── */
     .faq-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1rem; max-width: 720px; }
-    .faq-item {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-    }
-    .faq-question {
-      padding: 1.25rem 1.5rem; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center;
-      font-weight: 600; font-size: 0.975rem;
-      transition: background 0.2s;
-      user-select: none;
-    }
+    .faq-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .faq-question { padding: 1.25rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.975rem; transition: background 0.2s; user-select: none; }
     .faq-question:hover { background: var(--bg3); }
-    .faq-chevron {
-      color: var(--accent2); flex-shrink: 0;
-      transition: transform 0.25s;
-      display: flex; align-items: center;
-    }
-    .faq-answer {
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-      color: var(--text2); font-size: 0.93rem; line-height: 1.65;
-    }
+    .faq-chevron { color: var(--accent2); flex-shrink: 0; transition: transform 0.25s; display: flex; align-items: center; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text2); font-size: 0.93rem; line-height: 1.65; }
     .faq-item.open .faq-answer { max-height: 300px; padding: 0 1.5rem 1.25rem; }
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
 
-    /* ── FINAL CTA ── */
+    /* ── CTA ── */
     .cta-section { text-align: center; }
     .cta-inner { max-width: 640px; margin: 0 auto; }
-    .cta-section h2 {
-      font-size: clamp(2rem, 4.5vw, 3.2rem);
-      font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1.25rem;
-    }
+    .cta-section h2 { font-size: clamp(2rem,4.5vw,3.2rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1.25rem; }
     .cta-section p { color: var(--text2); font-size: 1.05rem; margin-bottom: 2.5rem; }
 
     /* ── FOOTER ── */
-    footer {
-      padding: 2rem 1.5rem; text-align: center;
-      border-top: 1px solid var(--border);
-      color: var(--text2); font-size: 0.85rem;
-    }
-    footer .footer-logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700; font-size: 1rem;
-      background: linear-gradient(135deg, #a855f7, #f97316);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      display: block; margin-bottom: 0.6rem;
-    }
+    footer { padding: 2rem 1.5rem; text-align: center; border-top: 1px solid var(--border); color: var(--text2); font-size: 0.85rem; }
+    footer .footer-logo { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; background: linear-gradient(135deg,#a855f7,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; margin-bottom: 0.6rem; }
 
     /* ── ANIMATIONS ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
-    }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── CALENDAR SECTION ── */
+    /* ── CALENDAR ── */
     .calendar-section { background: var(--bg3); }
-
-    .calendar-layout {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 2.5rem;
-      margin-top: 3.5rem;
-      align-items: start;
-    }
-
-    .cal-mini {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.75rem;
-      position: sticky;
-      top: 5.5rem;
-    }
-
-    .cal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.25rem;
-    }
-
-    .cal-month-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 0.875rem;
-      color: var(--accent2);
-      letter-spacing: 0.05em;
-    }
-
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 3px;
-    }
-
-    .cal-day-name {
-      text-align: center;
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--text2);
-      padding: 0.3rem 0 0.6rem;
-      letter-spacing: 0.04em;
-    }
-
-    .cal-day {
-      aspect-ratio: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      border-radius: 7px;
-      position: relative;
-      color: var(--text2);
-      gap: 2px;
-      transition: background 0.15s;
-    }
-
+    .calendar-layout { display: grid; grid-template-columns: 300px 1fr; gap: 2.5rem; margin-top: 3.5rem; align-items: start; }
+    .cal-mini { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; position: sticky; top: 5.5rem; }
+    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .cal-month-label { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.875rem; color: var(--accent2); letter-spacing: 0.05em; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+    .cal-day-name { text-align: center; font-size: 0.68rem; font-weight: 700; color: var(--text2); padding: 0.3rem 0 0.6rem; letter-spacing: 0.04em; }
+    .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.78rem; border-radius: 7px; position: relative; color: var(--text2); gap: 2px; transition: background 0.15s; }
     .cal-day.empty { visibility: hidden; }
-
-    .cal-day.today {
-      background: rgba(124,58,237,0.22);
-      color: var(--text);
-      font-weight: 800;
-      border: 1px solid var(--accent);
-    }
-
+    .cal-day.today { background: rgba(124,58,237,0.22); color: var(--text); font-weight: 800; border: 1px solid var(--accent); }
     .cal-day.has-session { color: var(--text); font-weight: 600; }
     .cal-day.has-session:not(.today) { background: rgba(255,255,255,0.04); }
-
-    .cal-dot {
-      width: 4px; height: 4px;
-      border-radius: 50%;
-      display: block;
-    }
-
+    .cal-dot { width: 4px; height: 4px; border-radius: 50%; display: block; }
     .cal-day.session-weekly .cal-dot { background: var(--accent2); }
     .cal-day.session-hackathon .cal-dot { background: var(--accent3); }
-
-    .cal-legend {
-      display: flex;
-      gap: 1.25rem;
-      margin-top: 1.25rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-size: 0.75rem;
-      color: var(--text2);
-    }
-
-    .legend-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
+    .cal-legend { display: flex; gap: 1.25rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+    .legend-item { display: flex; align-items: center; gap: 0.45rem; font-size: 0.75rem; color: var(--text2); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .legend-dot.weekly { background: var(--accent2); }
     .legend-dot.hackathon { background: var(--accent3); }
-
-    /* Session cards */
-    .sessions-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    /* skeleton loader */
-    .session-skeleton {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 14px; padding: 1.25rem 1.5rem;
-      display: flex; gap: 1.25rem; align-items: flex-start;
-    }
-    .skel-block {
-      background: rgba(255,255,255,0.05);
-      border-radius: 6px;
-      animation: shimmer 1.4s infinite;
-    }
-    @keyframes shimmer {
-      0%   { opacity: 0.5; }
-      50%  { opacity: 1; }
-      100% { opacity: 0.5; }
-    }
-
-    .session-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      gap: 1.25rem;
-      align-items: flex-start;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .session-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
-      border-radius: 14px 0 0 14px;
-      background: var(--accent);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
+    .sessions-list { display: flex; flex-direction: column; gap: 1rem; }
+    .session-skeleton { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; }
+    .skel-block { background: rgba(255,255,255,0.05); border-radius: 6px; animation: shimmer 1.4s infinite; }
+    @keyframes shimmer { 0%{opacity:0.5} 50%{opacity:1} 100%{opacity:0.5} }
+    .session-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; cursor: pointer; }
+    .session-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; border-radius: 14px 0 0 14px; background: var(--accent); opacity: 0; transition: opacity 0.2s; }
     .session-card.hackathon-card::before { background: var(--accent3); }
-
     .session-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.12); }
     .session-card:hover::before { opacity: 1; }
     .session-card.hackathon-card:hover { box-shadow: 0 8px 32px rgba(249,115,22,0.12); }
-
-    .session-card.happening {
-      border-color: rgba(124,58,237,0.45);
-      box-shadow: 0 0 0 1px rgba(124,58,237,0.15), 0 4px 20px rgba(124,58,237,0.08);
-    }
+    .session-card.happening { border-color: rgba(124,58,237,0.45); box-shadow: 0 0 0 1px rgba(124,58,237,0.15),0 4px 20px rgba(124,58,237,0.08); }
     .session-card.happening::before { opacity: 1; }
-
     .session-card.past { opacity: 0.55; }
-
-    .session-date-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 52px;
-      background: var(--bg3);
-      border-radius: 10px;
-      padding: 0.65rem 0.5rem;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
+    .session-date-badge { display: flex; flex-direction: column; align-items: center; min-width: 52px; background: var(--bg3); border-radius: 10px; padding: 0.65rem 0.5rem; border: 1px solid var(--border); flex-shrink: 0; }
     .session-date-badge.weekly { border-color: rgba(124,58,237,0.3); }
     .session-date-badge.hackathon-badge { border-color: rgba(249,115,22,0.3); }
-
-    .s-day {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; font-weight: 700;
-      letter-spacing: 0.1em; color: var(--text2);
-    }
-
-    .s-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.5rem; font-weight: 700;
-      line-height: 1; margin: 0.15rem 0;
-    }
-
+    .s-day { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; color: var(--text2); }
+    .s-num { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; line-height: 1; margin: 0.15rem 0; }
     .session-date-badge.weekly .s-num { color: var(--accent2); }
     .session-date-badge.hackathon-badge .s-num { color: var(--accent3); }
-
-    .s-month {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem; font-weight: 700;
-      letter-spacing: 0.1em; color: var(--text2);
-    }
-
+    .s-month { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; color: var(--text2); }
     .session-info { flex: 1; min-width: 0; }
-
-    .session-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .session-tag {
-      font-size: 0.68rem; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 0.2rem 0.6rem; border-radius: 100px;
-    }
-
-    .session-tag.weekly {
-      background: rgba(124,58,237,0.14);
-      color: var(--accent2);
-      border: 1px solid rgba(124,58,237,0.25);
-    }
-
-    .session-tag.hackathon {
-      background: rgba(249,115,22,0.12);
-      color: var(--accent3);
-      border: 1px solid rgba(249,115,22,0.28);
-    }
-
-    .session-status {
-      font-size: 0.73rem; font-weight: 600;
-      padding: 0.2rem 0.6rem; border-radius: 100px;
-      display: inline-flex; align-items: center; gap: 0.35rem;
-    }
-
-    .status-dot {
-      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-    }
-
-    .session-status.live {
-      background: rgba(239,68,68,0.12);
-      color: #f87171;
-      border: 1px solid rgba(239,68,68,0.25);
-    }
-    .session-status.live .status-dot { background: #f87171; animation: pulse 1.5s infinite; }
-
-    .session-status.open {
-      background: rgba(74,222,128,0.1);
-      color: #4ade80;
-      border: 1px solid rgba(74,222,128,0.22);
-    }
-
-    .session-status.full {
-      background: rgba(160,160,180,0.08);
-      color: var(--text2);
-      border: 1px solid var(--border);
-    }
-
-    .session-status.past {
-      background: rgba(160,160,180,0.06);
-      color: var(--text2);
-      border: 1px solid var(--border);
-    }
-
-    .session-title {
-      font-size: 1rem; font-weight: 700;
-      margin-bottom: 0.6rem; color: var(--text);
-    }
-
-    .session-details {
-      display: flex;
-      gap: 1.1rem;
-      flex-wrap: wrap;
-      font-size: 0.82rem;
-      color: var(--text2);
-      align-items: center;
-    }
-
-    .session-details span {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-    }
-
-    .cal-disclaimer {
-      text-align: center;
-      margin-top: 2.5rem;
-      font-size: 0.78rem;
-      color: var(--text2);
-      font-style: italic;
-      opacity: 0.55;
-    }
-
-    /* ── FILTER TABS ── */
-    .filter-tabs { display: flex; gap: 0.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
-    .filter-tab {
-      padding: 0.5rem 1.1rem; border-radius: 100px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text2); font-size: 0.83rem; font-weight: 600;
-      cursor: pointer; font-family: inherit; transition: all 0.2s;
-    }
-    .filter-tab:hover { border-color: var(--accent2); color: var(--text); }
-    .filter-tab.active { background: rgba(124,58,237,0.15); border-color: var(--accent); color: var(--accent2); }
-
-    /* ── CAL NAV BUTTON ── */
-    .cal-nav-btn {
-      background: transparent; border: 1px solid var(--border);
-      color: var(--text2); width: 28px; height: 28px; border-radius: 6px;
-      cursor: pointer; padding: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s; font-family: inherit;
-    }
-    .cal-nav-btn:hover:not(:disabled) { border-color: var(--accent2); color: var(--text); }
-    .cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-    /* ── CALENDAR SELECTED DAY ── */
-    .cal-day.cal-selected { background: rgba(124,58,237,0.3) !important; border: 1px solid var(--accent2); }
-    .cal-day[data-sid] { cursor: pointer; }
-    .cal-day[data-sid]:hover:not(.today):not(.cal-selected) { background: rgba(255,255,255,0.07); }
-
-    /* ── SPOT PROGRESS BAR ── */
+    .session-meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+    .session-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 100px; }
+    .session-tag.weekly { background: rgba(124,58,237,0.14); color: var(--accent2); border: 1px solid rgba(124,58,237,0.25); }
+    .session-tag.hackathon { background: rgba(249,115,22,0.12); color: var(--accent3); border: 1px solid rgba(249,115,22,0.28); }
+    .session-status { font-size: 0.73rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; display: inline-flex; align-items: center; gap: 0.35rem; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .session-status.live { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+    .session-status.live .status-dot { background: var(--red); animation: pulse 1.5s infinite; }
+    .session-status.open { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.22); }
+    .session-status.full { background: rgba(160,160,180,0.08); color: var(--text2); border: 1px solid var(--border); }
+    .session-status.past { background: rgba(160,160,180,0.06); color: var(--text2); border: 1px solid var(--border); }
+    .session-status.reserved { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.22); }
+    .session-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--text); }
+    .session-details { display: flex; gap: 1.1rem; flex-wrap: wrap; font-size: 0.82rem; color: var(--text2); align-items: center; }
+    .session-details span { display: inline-flex; align-items: center; gap: 0.35rem; }
     .spot-bar-wrap { width: 100%; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; margin-top: 0.75rem; overflow: hidden; }
     .spot-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
-    .spot-bar-fill.weekly { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-    .spot-bar-fill.hackathon { background: linear-gradient(90deg, #ea580c, var(--accent3)); }
+    .spot-bar-fill.weekly { background: linear-gradient(90deg,var(--accent),var(--accent2)); }
+    .spot-bar-fill.hackathon { background: linear-gradient(90deg,#ea580c,var(--accent3)); }
     .spot-bar-fill.full { background: rgba(160,160,180,0.35); }
-
-    /* ── SESSION EXPAND ── */
     .session-expand { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-    .session-card.active .session-expand { max-height: 600px; }
+    .session-card.active .session-expand { max-height: 500px; }
     .session-card.active { border-color: var(--accent2) !important; box-shadow: 0 8px 32px rgba(124,58,237,0.15) !important; }
     .session-card.hackathon-card.active { border-color: var(--accent3) !important; box-shadow: 0 8px 32px rgba(249,115,22,0.15) !important; }
     .session-expand-inner { padding-top: 0.9rem; border-top: 1px solid var(--border); margin-top: 0.85rem; }
@@ -687,97 +242,96 @@
     .session-format { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .format-chip { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 6px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
     .no-sessions { text-align: center; color: var(--text2); font-size: 0.9rem; padding: 3rem 1rem; font-style: italic; }
+    .cal-disclaimer { text-align: center; margin-top: 2.5rem; font-size: 0.78rem; color: var(--text2); font-style: italic; opacity: 0.55; }
 
-    /* ── REGISTRATION FORM ── */
-    .reg-form-wrap {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem 1.1rem;
-    }
-    .reg-form-label {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--accent2);
-      margin-bottom: 0.65rem; display: block;
-    }
-    .reg-form-row {
-      display: flex; gap: 0.5rem; flex-wrap: wrap;
-    }
-    .reg-input {
-      flex: 1; min-width: 150px;
-      padding: 0.6rem 0.85rem; border-radius: 8px;
-      background: var(--bg2); color: var(--text);
-      border: 1px solid var(--border);
-      font-size: 0.875rem; font-family: inherit;
-      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .reg-input:focus {
-      border-color: var(--accent2);
-      box-shadow: 0 0 0 2px rgba(124,58,237,0.18);
-    }
-    .reg-btn {
-      padding: 0.6rem 1.1rem; border-radius: 8px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff; border: none; cursor: pointer;
-      font-size: 0.875rem; font-weight: 700; font-family: inherit;
-      white-space: nowrap;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .reg-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-    .reg-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-    .reg-feedback {
-      margin-top: 0.55rem; font-size: 0.8rem; min-height: 1.2rem;
-    }
-    .reg-feedback.success { color: #4ade80; }
-    .reg-feedback.error   { color: #f87171; }
+    /* Session action area */
+    .session-action { margin-top: 0.5rem; }
+    .reserve-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.2rem; border-radius: 9px; background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #fff; border: none; cursor: pointer; font-size: 0.875rem; font-weight: 700; font-family: inherit; transition: opacity 0.2s, transform 0.15s; }
+    .reserve-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .reserve-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .login-to-reserve { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 600; color: var(--accent2); cursor: pointer; background: none; border: 1px solid rgba(124,58,237,0.3); padding: 0.6rem 1rem; border-radius: 8px; font-family: inherit; transition: all 0.2s; }
+    .login-to-reserve:hover { background: rgba(124,58,237,0.1); border-color: var(--accent2); }
+    .reserved-badge { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.82rem; font-weight: 600; color: var(--green); padding: 0.5rem 0.9rem; border-radius: 8px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); }
+
+    /* ── FILTER TABS ── */
+    .filter-tabs { display: flex; gap: 0.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .filter-tab { padding: 0.5rem 1.1rem; border-radius: 100px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 0.83rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .filter-tab:hover { border-color: var(--accent2); color: var(--text); }
+    .filter-tab.active { background: rgba(124,58,237,0.15); border-color: var(--accent); color: var(--accent2); }
+    .cal-nav-btn { background: transparent; border: 1px solid var(--border); color: var(--text2); width: 28px; height: 28px; border-radius: 6px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .cal-nav-btn:hover:not(:disabled) { border-color: var(--accent2); color: var(--text); }
+    .cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .cal-day.cal-selected { background: rgba(124,58,237,0.3) !important; border: 1px solid var(--accent2); }
+    .cal-day[data-sid] { cursor: pointer; }
+    .cal-day[data-sid]:hover:not(.today):not(.cal-selected) { background: rgba(255,255,255,0.07); }
 
     /* ── PARTNERS ── */
     .partners-section { background: var(--bg2); border-top: 1px solid var(--border); }
-    .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
-    .partner-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      position: relative; overflow: hidden;
-    }
-    .partner-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      opacity: 0; transition: opacity 0.2s;
-    }
-    .partner-card.hackathon-p::before { background: linear-gradient(90deg, var(--accent3), #f97316); }
-    .partner-card.venue-p::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-    .partner-card.tech-p::before { background: linear-gradient(90deg, #4ade80, #22d3ee); }
+    .partners-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+    .partner-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
+    .partner-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; opacity: 0; transition: opacity 0.2s; }
+    .partner-card.hackathon-p::before { background: linear-gradient(90deg,var(--accent3),#f97316); }
+    .partner-card.venue-p::before { background: linear-gradient(90deg,var(--accent),var(--accent2)); }
+    .partner-card.tech-p::before { background: linear-gradient(90deg,#4ade80,#22d3ee); }
     .partner-card:hover { transform: translateY(-4px); border-color: rgba(124,58,237,0.3); box-shadow: 0 12px 40px rgba(124,58,237,0.1); }
     .partner-card:hover::before { opacity: 1; }
-    .partner-badge {
-      display: inline-block; font-size: 0.68rem; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0.22rem 0.65rem; border-radius: 100px; margin-bottom: 1.25rem;
-    }
+    .partner-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.22rem 0.65rem; border-radius: 100px; margin-bottom: 1.25rem; }
     .partner-badge.hackathon-p { background: rgba(249,115,22,0.12); color: var(--accent3); border: 1px solid rgba(249,115,22,0.25); }
     .partner-badge.venue-p { background: rgba(124,58,237,0.12); color: var(--accent2); border: 1px solid rgba(124,58,237,0.25); }
     .partner-badge.tech-p { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
-    .partner-logo-name {
-      font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700;
-      margin-bottom: 0.65rem; display: block;
-      background: linear-gradient(135deg, var(--text) 60%, var(--text2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .partner-logo-name { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.65rem; display: block; background: linear-gradient(135deg,var(--text) 60%,var(--text2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .partner-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
     .partner-card p { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 1rem; }
     .partner-domain { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text2); opacity: 0.55; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 800px) {
-      .calendar-layout { grid-template-columns: 1fr; }
-      .cal-mini { position: static; }
-    }
+    /* ── AUTH MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; width: 100%; max-width: 420px; position: relative; transform: translateY(16px) scale(0.98); transition: transform 0.25s; box-shadow: 0 32px 80px rgba(0,0,0,0.5); }
+    .modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text2); cursor: pointer; padding: 0.25rem; border-radius: 6px; display: flex; align-items: center; transition: color 0.15s; }
+    .modal-close:hover { color: var(--text); }
+    .modal-logo { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg,#a855f7,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; display: block; }
+    .auth-tabs { display: flex; background: var(--bg3); border-radius: 10px; padding: 3px; margin-bottom: 1.75rem; }
+    .auth-tab { flex: 1; padding: 0.55rem; text-align: center; border: none; background: transparent; color: var(--text2); font-size: 0.875rem; font-weight: 600; cursor: pointer; border-radius: 8px; font-family: inherit; transition: all 0.2s; }
+    .auth-tab.active { background: var(--bg2); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .auth-form { display: flex; flex-direction: column; gap: 0.85rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-label { font-size: 0.78rem; font-weight: 600; color: var(--text2); letter-spacing: 0.03em; }
+    .form-input { padding: 0.7rem 0.95rem; border-radius: 9px; background: var(--bg3); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-input:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+    .auth-submit { margin-top: 0.25rem; width: 100%; padding: 0.8rem; border-radius: 10px; background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #fff; border: none; cursor: pointer; font-size: 0.95rem; font-weight: 700; font-family: inherit; transition: opacity 0.2s, transform 0.15s; }
+    .auth-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+    .auth-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .auth-error { font-size: 0.82rem; color: var(--red); min-height: 1.1rem; text-align: center; }
+    .auth-switch { font-size: 0.82rem; color: var(--text2); text-align: center; margin-top: 0.5rem; }
+    .auth-switch button { background: none; border: none; color: var(--accent2); cursor: pointer; font-size: inherit; font-weight: 600; padding: 0; font-family: inherit; }
+    .auth-switch button:hover { color: var(--text); }
 
-    @media (max-width: 600px) {
-      .waitlist-form { flex-direction: column; align-items: stretch; }
-      .waitlist-form input[type="email"] { width: 100%; }
-      .hero-stats { gap: 1.75rem; }
-      .session-details { gap: 0.7rem; }
-      .reg-form-row { flex-direction: column; }
-    }
+    /* ── RESERVATIONS MODAL ── */
+    .reservations-card { max-width: 540px; }
+    .reservations-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; max-height: 60vh; overflow-y: auto; padding-right: 0.25rem; }
+    .reservation-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; display: flex; gap: 1rem; align-items: center; }
+    .reservation-item.past-res { opacity: 0.5; }
+    .res-date { display: flex; flex-direction: column; align-items: center; min-width: 44px; flex-shrink: 0; }
+    .res-day { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; font-weight: 700; color: var(--text2); letter-spacing: 0.08em; }
+    .res-num { font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 700; line-height: 1; }
+    .res-date.weekly .res-num { color: var(--accent2); }
+    .res-date.hackathon .res-num { color: var(--accent3); }
+    .res-mon { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; font-weight: 700; color: var(--text2); letter-spacing: 0.08em; }
+    .res-info { flex: 1; min-width: 0; }
+    .res-title { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .res-time { font-size: 0.78rem; color: var(--text2); }
+    .res-status { font-size: 0.7rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 100px; flex-shrink: 0; }
+    .res-status.open { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.22); }
+    .res-status.live { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+    .res-status.past { background: rgba(160,160,180,0.08); color: var(--text2); border: 1px solid var(--border); }
+    .empty-reservations { text-align: center; padding: 2.5rem 1rem; color: var(--text2); font-size: 0.9rem; }
+    .empty-reservations p { margin-top: 0.6rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) { .calendar-layout { grid-template-columns: 1fr; } .cal-mini { position: static; } }
+    @media (max-width: 600px) { .waitlist-form { flex-direction: column; align-items: stretch; } .waitlist-form input[type="email"] { width: 100%; } .hero-stats { gap: 1.75rem; } .session-details { gap: 0.7rem; } nav { padding: 0.85rem 1.25rem; } }
   </style>
 </head>
 <body>
@@ -785,41 +339,46 @@
   <!-- NAV -->
   <nav>
     <span class="logo">hackr_</span>
-    <a href="#waitlist" class="nav-cta">Unirse al waitlist</a>
+    <div class="nav-right">
+      <!-- Estado: no autenticado -->
+      <a href="#waitlist" class="nav-btn" id="navWaitlistBtn">Unirse al waitlist</a>
+      <button class="nav-cta" id="navLoginBtn" onclick="openAuthModal('login')">Ingresar</button>
+      <!-- Estado: autenticado (oculto por defecto) -->
+      <div class="user-menu" id="userMenu" style="display:none">
+        <button class="user-menu-btn" id="userMenuBtn">
+          <span class="user-avatar" id="userAvatar"></span>
+          <span id="userMenuName"></span>
+          <i data-lucide="chevron-down" width="14" height="14"></i>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <button onclick="openReservations()">
+            <i data-lucide="calendar-check" width="14" height="14"></i>
+            Mis reservas
+          </button>
+          <hr />
+          <button class="danger" onclick="logout()">
+            <i data-lucide="log-out" width="14" height="14"></i>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="badge">
-      <span class="dot"></span>
-      Próximamente · Plazas limitadas
-    </div>
-    <h1>
-      Deja de <span class="gradient">aplazar</span>.<br />
-      <span class="underline-accent">Construye ahora.</span>
-    </h1>
-    <p class="hero-sub">
-      Hackr reúne a personas con proyectos parados para sesiones intensivas de construcción.
-      Comprométete en vivo, construye en grupo, entrega al final.
-    </p>
+    <div class="badge"><span class="dot"></span>Próximamente · Plazas limitadas</div>
+    <h1>Deja de <span class="gradient">aplazar</span>.<br /><span class="underline-accent">Construye ahora.</span></h1>
+    <p class="hero-sub">Hackr reúne a personas con proyectos parados para sesiones intensivas de construcción. Comprométete en vivo, construye en grupo, entrega al final.</p>
     <form class="waitlist-form" id="heroForm">
       <input type="email" placeholder="tu@email.com" required id="heroEmail" />
       <button type="submit" class="btn-primary" id="heroBtn">Quiero un lugar →</button>
     </form>
     <div class="form-feedback" id="heroFeedback"></div>
     <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num">3h</div>
-        <div class="stat-label">Sesiones intensivas</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Foco en construir</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">0</div>
-        <div class="stat-label">Excusas permitidas</div>
-      </div>
+      <div class="stat"><div class="stat-num">3h</div><div class="stat-label">Sesiones intensivas</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Foco en construir</div></div>
+      <div class="stat"><div class="stat-num">0</div><div class="stat-label">Excusas permitidas</div></div>
     </div>
   </section>
 
@@ -859,64 +418,33 @@
       <h2 class="section-title reveal">La procrastinación odia<br />el compromiso público.</h2>
       <p class="section-subtitle reveal">No es magia. Es psicología aplicada: presión social positiva + deadline real + comunidad que avanza.</p>
       <div class="why-grid">
-        <div class="why-card reveal">
-          <div class="why-icon"><i data-lucide="lock" width="18" height="18"></i></div>
-          <h3>Compromiso público</h3>
-          <p>Cuando le dices a un grupo qué vas a hacer, el costo de no hacerlo sube. Simple y brutalmente efectivo.</p>
-        </div>
-        <div class="why-card reveal">
-          <div class="why-icon"><i data-lucide="timer" width="18" height="18"></i></div>
-          <h3>Deadline real</h3>
-          <p>Sin fecha límite, nada pasa. Con una sesión programada, de repente encuentras el tiempo que "no tenías".</p>
-        </div>
-        <div class="why-card reveal">
-          <div class="why-icon"><i data-lucide="users" width="18" height="18"></i></div>
-          <h3>No estás solo</h3>
-          <p>Todos en la sala tienen proyectos parados. El contexto compartido genera energía que no puedes recrear solo en tu cuarto.</p>
-        </div>
-        <div class="why-card reveal">
-          <div class="why-icon"><i data-lucide="trending-up" width="18" height="18"></i></div>
-          <h3>Progreso visible</h3>
-          <p>Semana tras semana, tu proyecto crece. La acumulación de sesiones convierte ideas en productos reales.</p>
-        </div>
-        <div class="why-card reveal">
-          <div class="why-icon"><i data-lucide="handshake" width="18" height="18"></i></div>
-          <h3>Comunidad que construye</h3>
-          <p>Conoces a gente en el mismo momento del camino. No mentores, no inversores. Builders, como tú.</p>
-        </div>
-        <div class="why-card reveal">
-          <div class="why-icon"><i data-lucide="repeat" width="18" height="18"></i></div>
-          <h3>Recurrencia</h3>
-          <p>No es un evento de una vez. Es un ritmo. La recurrencia es lo que convierte intenciones en hábitos.</p>
-        </div>
+        <div class="why-card reveal"><div class="why-icon"><i data-lucide="lock" width="18" height="18"></i></div><h3>Compromiso público</h3><p>Cuando le dices a un grupo qué vas a hacer, el costo de no hacerlo sube. Simple y brutalmente efectivo.</p></div>
+        <div class="why-card reveal"><div class="why-icon"><i data-lucide="timer" width="18" height="18"></i></div><h3>Deadline real</h3><p>Sin fecha límite, nada pasa. Con una sesión programada, de repente encuentras el tiempo que "no tenías".</p></div>
+        <div class="why-card reveal"><div class="why-icon"><i data-lucide="users" width="18" height="18"></i></div><h3>No estás solo</h3><p>Todos en la sala tienen proyectos parados. El contexto compartido genera energía que no puedes recrear solo en tu cuarto.</p></div>
+        <div class="why-card reveal"><div class="why-icon"><i data-lucide="trending-up" width="18" height="18"></i></div><h3>Progreso visible</h3><p>Semana tras semana, tu proyecto crece. La acumulación de sesiones convierte ideas en productos reales.</p></div>
+        <div class="why-card reveal"><div class="why-icon"><i data-lucide="handshake" width="18" height="18"></i></div><h3>Comunidad que construye</h3><p>Conoces a gente en el mismo momento del camino. No mentores, no inversores. Builders, como tú.</p></div>
+        <div class="why-card reveal"><div class="why-icon"><i data-lucide="repeat" width="18" height="18"></i></div><h3>Recurrencia</h3><p>No es un evento de una vez. Es un ritmo. La recurrencia es lo que convierte intenciones en hábitos.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- CALENDAR / PRÓXIMAS SESIONES -->
+  <!-- SESSIONS -->
   <section class="calendar-section" id="sessions">
     <div class="section-inner">
       <p class="section-label reveal">Próximas sesiones</p>
       <h2 class="section-title reveal">El ritmo que te faltaba.</h2>
       <p class="section-subtitle reveal">Sesiones semanales fijas + hackathons de fin de semana. Siempre hay una próxima fecha para construir.</p>
-
       <div class="filter-tabs reveal">
         <button class="filter-tab active" data-filter="all">Todas</button>
         <button class="filter-tab" data-filter="weekly">Sesiones semanales</button>
         <button class="filter-tab" data-filter="hackathon">Hackathons</button>
       </div>
-
       <div class="calendar-layout">
-        <!-- Mini calendar (rendered by JS) -->
         <div class="cal-mini">
           <div class="cal-header">
-            <button class="cal-nav-btn" id="calPrev">
-              <i data-lucide="chevron-left" width="16" height="16"></i>
-            </button>
+            <button class="cal-nav-btn" id="calPrev"><i data-lucide="chevron-left" width="16" height="16"></i></button>
             <span class="cal-month-label" id="calMonthLabel"></span>
-            <button class="cal-nav-btn" id="calNext">
-              <i data-lucide="chevron-right" width="16" height="16"></i>
-            </button>
+            <button class="cal-nav-btn" id="calNext"><i data-lucide="chevron-right" width="16" height="16"></i></button>
           </div>
           <div class="cal-grid" id="calGrid"></div>
           <div class="cal-legend">
@@ -924,26 +452,9 @@
             <span class="legend-item"><span class="legend-dot hackathon"></span> Hackathon</span>
           </div>
         </div>
-
-        <!-- Session cards (rendered by JS) -->
         <div class="sessions-list" id="sessionsList">
-          <!-- skeleton -->
-          <div class="session-skeleton">
-            <div class="skel-block" style="width:52px;height:72px;border-radius:10px;flex-shrink:0"></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:0.6rem;">
-              <div class="skel-block" style="width:120px;height:14px"></div>
-              <div class="skel-block" style="width:80%;height:18px"></div>
-              <div class="skel-block" style="width:60%;height:12px"></div>
-            </div>
-          </div>
-          <div class="session-skeleton">
-            <div class="skel-block" style="width:52px;height:72px;border-radius:10px;flex-shrink:0"></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:0.6rem;">
-              <div class="skel-block" style="width:100px;height:14px"></div>
-              <div class="skel-block" style="width:70%;height:18px"></div>
-              <div class="skel-block" style="width:50%;height:12px"></div>
-            </div>
-          </div>
+          <div class="session-skeleton"><div class="skel-block" style="width:52px;height:72px;border-radius:10px;flex-shrink:0"></div><div style="flex:1;display:flex;flex-direction:column;gap:0.6rem;"><div class="skel-block" style="width:120px;height:14px"></div><div class="skel-block" style="width:80%;height:18px"></div><div class="skel-block" style="width:60%;height:12px"></div></div></div>
+          <div class="session-skeleton"><div class="skel-block" style="width:52px;height:72px;border-radius:10px;flex-shrink:0"></div><div style="flex:1;display:flex;flex-direction:column;gap:0.6rem;"><div class="skel-block" style="width:100px;height:14px"></div><div class="skel-block" style="width:70%;height:18px"></div><div class="skel-block" style="width:50%;height:12px"></div></div></div>
         </div>
       </div>
     </div>
@@ -956,27 +467,9 @@
       <h2 class="section-title reveal">Respaldado por quien<br />construye Santiago.</h2>
       <p class="section-subtitle reveal">Hackr no arranca solo. Trabajamos con organizaciones que comparten la misma obsesión por construir cosas reales.</p>
       <div class="partners-grid">
-        <div class="partner-card hackathon-p reveal">
-          <span class="partner-badge hackathon-p">Hackathon Partner</span>
-          <span class="partner-logo-name">Platanus_</span>
-          <h3>Mentorship & comunidad</h3>
-          <p>El equipo de Platanus Ventures da feedback directo a los mejores proyectos de cada hackathon. Las ideas más interesantes entran en su radar de inversión.</p>
-          <span class="partner-domain">platanus.vc</span>
-        </div>
-        <div class="partner-card venue-p reveal">
-          <span class="partner-badge venue-p">Venue Partner</span>
-          <span class="partner-logo-name">Awake_</span>
-          <h3>Espacio para construir</h3>
-          <p>Espacios de trabajo en Santiago Centro y Las Condes para las sesiones presenciales y hackathons de fin de semana. Ambiente diseñado para el foco profundo.</p>
-          <span class="partner-domain">awake.cl</span>
-        </div>
-        <div class="partner-card tech-p reveal">
-          <span class="partner-badge tech-p">Tech Partner</span>
-          <span class="partner-logo-name">Khipu_</span>
-          <h3>Pagos desde el día 1</h3>
-          <p>API de pagos chilena para los proyectos que quieran cobrar desde el primer sprint. Créditos de API exclusivos para los builders de Hackr.</p>
-          <span class="partner-domain">khipu.com</span>
-        </div>
+        <div class="partner-card hackathon-p reveal"><span class="partner-badge hackathon-p">Hackathon Partner</span><span class="partner-logo-name">Platanus_</span><h3>Mentorship & comunidad</h3><p>El equipo de Platanus Ventures da feedback directo a los mejores proyectos de cada hackathon. Las ideas más interesantes entran en su radar de inversión.</p><span class="partner-domain">platanus.vc</span></div>
+        <div class="partner-card venue-p reveal"><span class="partner-badge venue-p">Venue Partner</span><span class="partner-logo-name">Awake_</span><h3>Espacio para construir</h3><p>Espacios de trabajo en Santiago Centro y Las Condes para las sesiones presenciales y hackathons de fin de semana. Ambiente diseñado para el foco profundo.</p><span class="partner-domain">awake.cl</span></div>
+        <div class="partner-card tech-p reveal"><span class="partner-badge tech-p">Tech Partner</span><span class="partner-logo-name">Khipu_</span><h3>Pagos desde el día 1</h3><p>API de pagos chilena para los proyectos que quieran cobrar desde el primer sprint. Créditos de API exclusivos para los builders de Hackr.</p><span class="partner-domain">khipu.com</span></div>
       </div>
     </div>
   </section>
@@ -984,9 +477,7 @@
   <!-- QUOTE -->
   <section class="quote-section">
     <div class="section-inner quote-inner">
-      <blockquote class="reveal">
-        "La idea más pequeña ejecutada <span>vale infinitamente más</span> que la idea perfecta que sigue en tu cabeza."
-      </blockquote>
+      <blockquote class="reveal">"La idea más pequeña ejecutada <span>vale infinitamente más</span> que la idea perfecta que sigue en tu cabeza."</blockquote>
       <p class="quote-caption reveal">El principio que está detrás de cada sesión de Hackr.</p>
     </div>
   </section>
@@ -997,34 +488,19 @@
       <p class="section-label reveal">Preguntas frecuentes</p>
       <h2 class="section-title reveal">Lo que todos preguntan.</h2>
       <div class="faq-list reveal">
-        <div class="faq-item">
-          <div class="faq-question">¿Necesito saber programar? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
-          <div class="faq-answer">No. Hackr es para cualquier tipo de proyecto: apps, negocios, contenido, arte, servicios. Lo único que necesitas es tener algo que quieres construir y las ganas de hacerlo.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">¿Cuánto duran las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
-          <div class="faq-answer">Las sesiones estándar duran 3 horas con estructura clara: 10 min de check-in, 2h 20min de sprint, 30 min de demos. También habrá hackathons de fin de semana para proyectos más ambiciosos.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">¿Con qué frecuencia son las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
-          <div class="faq-answer">El plan es ofrecer sesiones semanales en horarios fijos para que puedas hacer de esto un hábito, más sesiones extra los fines de semana. Los detalles exactos los vamos a confirmar con la primera comunidad.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">¿Tiene costo? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
-          <div class="faq-answer">Las primeras sesiones son gratuitas para los early adopters de la lista. El modelo de negocio final será membresía mensual para acceso ilimitado, pero los que entren ahora van a tener condiciones especiales.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">¿Dónde son las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
-          <div class="faq-answer">Online por videollamada. Así puedes unirte desde donde estés, y podemos armar un grupo con gente de toda la región.</div>
-        </div>
+        <div class="faq-item"><div class="faq-question">¿Necesito saber programar? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div><div class="faq-answer">No. Hackr es para cualquier tipo de proyecto: apps, negocios, contenido, arte, servicios. Lo único que necesitas es tener algo que quieres construir y las ganas de hacerlo.</div></div>
+        <div class="faq-item"><div class="faq-question">¿Cuánto duran las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div><div class="faq-answer">Las sesiones estándar duran 3 horas con estructura clara: 10 min de check-in, 2h 20min de sprint, 30 min de demos. También habrá hackathons de fin de semana para proyectos más ambiciosos.</div></div>
+        <div class="faq-item"><div class="faq-question">¿Con qué frecuencia son las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div><div class="faq-answer">El plan es ofrecer sesiones semanales en horarios fijos para que puedas hacer de esto un hábito, más sesiones extra los fines de semana. Los detalles exactos los vamos a confirmar con la primera comunidad.</div></div>
+        <div class="faq-item"><div class="faq-question">¿Tiene costo? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div><div class="faq-answer">Las primeras sesiones son gratuitas para los early adopters de la lista. El modelo de negocio final será membresía mensual para acceso ilimitado, pero los que entren ahora van a tener condiciones especiales.</div></div>
+        <div class="faq-item"><div class="faq-question">¿Dónde son las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div><div class="faq-answer">Online por videollamada. Así puedes unirte desde donde estés, y podemos armar un grupo con gente de toda la región.</div></div>
       </div>
     </div>
   </section>
 
-  <!-- FINAL CTA / WAITLIST -->
+  <!-- FINAL CTA -->
   <section class="cta-section" id="waitlist">
     <div class="section-inner cta-inner">
-      <h2 class="reveal">¿Listo para<br /><span style="background: linear-gradient(135deg,#a855f7,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">dejar de aplazar?</span></h2>
+      <h2 class="reveal">¿Listo para<br /><span style="background:linear-gradient(135deg,#a855f7,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">dejar de aplazar?</span></h2>
       <p class="reveal">Anótate en el waitlist. Las primeras sesiones son para la comunidad fundadora y las plazas son limitadas.</p>
       <form class="waitlist-form reveal" id="ctaForm" style="justify-content:center">
         <input type="email" placeholder="tu@email.com" required id="ctaEmail" />
@@ -1040,18 +516,79 @@
     <p>Construido por builders, para builders. · 2026</p>
   </footer>
 
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeAuthModal()"><i data-lucide="x" width="18" height="18"></i></button>
+      <span class="modal-logo">hackr_</span>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Ingresar</button>
+        <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Crear cuenta</button>
+      </div>
+
+      <!-- Login form -->
+      <div id="loginForm">
+        <div class="auth-form">
+          <div class="form-field">
+            <label class="form-label" for="loginEmail">Email</label>
+            <input class="form-input" type="email" id="loginEmail" placeholder="tu@email.com" autocomplete="email" />
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="loginPassword">Contraseña</label>
+            <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+          <div class="auth-error" id="loginError"></div>
+          <button class="auth-submit" id="loginSubmit" onclick="submitLogin()">Ingresar →</button>
+        </div>
+        <p class="auth-switch">¿No tienes cuenta? <button onclick="switchAuthTab('signup')">Crear cuenta</button></p>
+      </div>
+
+      <!-- Signup form -->
+      <div id="signupForm" style="display:none">
+        <div class="auth-form">
+          <div class="form-field">
+            <label class="form-label" for="signupName">Nombre</label>
+            <input class="form-input" type="text" id="signupName" placeholder="Tu nombre" autocomplete="name" />
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="signupEmail">Email</label>
+            <input class="form-input" type="email" id="signupEmail" placeholder="tu@email.com" autocomplete="email" />
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="signupPassword">Contraseña <span style="font-weight:400;opacity:0.6">(mín. 8 caracteres)</span></label>
+            <input class="form-input" type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+          <div class="auth-error" id="signupError"></div>
+          <button class="auth-submit" id="signupSubmit" onclick="submitSignup()">Crear cuenta →</button>
+        </div>
+        <p class="auth-switch">¿Ya tienes cuenta? <button onclick="switchAuthTab('login')">Ingresar</button></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESERVATIONS MODAL -->
+  <div class="modal-overlay" id="reservationsModal">
+    <div class="modal-card reservations-card">
+      <button class="modal-close" onclick="closeReservations()"><i data-lucide="x" width="18" height="18"></i></button>
+      <span class="modal-logo">hackr_</span>
+      <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.25rem">Mis reservas</h2>
+      <p style="font-size:0.85rem;color:var(--text2)" id="resSubtitle">Cargando...</p>
+      <div class="reservations-list" id="reservationsList"></div>
+    </div>
+  </div>
+
   <script>
-    // ── Lucide icons ──
+    // ── Init Lucide ──
     lucide.createIcons();
 
     // ── Scroll reveal ──
     const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     reveals.forEach(r => io.observe(r));
 
-    // ── FAQ accordion ──
+    // ── FAQ ──
     document.querySelectorAll('.faq-question').forEach(q => {
       q.addEventListener('click', () => {
         const item = q.parentElement;
@@ -1063,16 +600,10 @@
 
     // ── Waitlist form ──
     async function submitWaitlist(email, btnEl, feedbackEl) {
-      btnEl.disabled = true;
-      btnEl.textContent = 'Enviando…';
-      feedbackEl.className = 'form-feedback';
-      feedbackEl.textContent = '';
+      btnEl.disabled = true; btnEl.textContent = 'Enviando…';
+      feedbackEl.className = 'form-feedback'; feedbackEl.textContent = '';
       try {
-        const res = await fetch('/api/waitlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
+        const res  = await fetch('/api/waitlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
         const data = await res.json();
         if (res.ok) {
           feedbackEl.textContent = '¡Ya estás dentro! Te avisamos cuando lancemos.';
@@ -1080,39 +611,224 @@
           btnEl.textContent = 'Anotado';
           btnEl.style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
         } else {
-          feedbackEl.textContent = data.error || 'Algo salió mal. Intentá de nuevo.';
+          feedbackEl.textContent = data.error || 'Algo salió mal. Intenta de nuevo.';
           feedbackEl.className = 'form-feedback error';
-          btnEl.disabled = false;
-          btnEl.textContent = 'Quiero un lugar →';
+          btnEl.disabled = false; btnEl.textContent = 'Quiero un lugar →';
         }
       } catch {
-        feedbackEl.textContent = 'Error de conexión. Intentá de nuevo.';
+        feedbackEl.textContent = 'Error de conexión. Intenta de nuevo.';
         feedbackEl.className = 'form-feedback error';
-        btnEl.disabled = false;
-        btnEl.textContent = 'Quiero un lugar →';
+        btnEl.disabled = false; btnEl.textContent = 'Quiero un lugar →';
+      }
+    }
+    document.getElementById('heroForm').addEventListener('submit', e => { e.preventDefault(); submitWaitlist(document.getElementById('heroEmail').value, document.getElementById('heroBtn'), document.getElementById('heroFeedback')); });
+    document.getElementById('ctaForm').addEventListener('submit', e => { e.preventDefault(); submitWaitlist(document.getElementById('ctaEmail').value, document.getElementById('ctaBtn'), document.getElementById('ctaFeedback')); });
+
+    // ════════════════════════════════════════
+    // AUTH
+    // ════════════════════════════════════════
+    let currentUser = null;
+    let authAfterFn = null;
+
+    async function loadAuth() {
+      try {
+        const res  = await fetch('/api/auth/me');
+        const data = await res.json();
+        currentUser = data.user;
+      } catch { currentUser = null; }
+      updateNavAuth();
+    }
+
+    function updateNavAuth() {
+      const loggedIn = !!currentUser;
+      document.getElementById('navWaitlistBtn').style.display = loggedIn ? 'none' : '';
+      document.getElementById('navLoginBtn').style.display    = loggedIn ? 'none' : '';
+      document.getElementById('userMenu').style.display       = loggedIn ? '' : 'none';
+      if (loggedIn) {
+        const initials = currentUser.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        document.getElementById('userAvatar').textContent   = initials;
+        document.getElementById('userMenuName').textContent = currentUser.name.split(' ')[0];
+        lucide.createIcons({ nodes: [document.getElementById('userMenu')] });
       }
     }
 
-    document.getElementById('heroForm').addEventListener('submit', e => {
-      e.preventDefault();
-      submitWaitlist(document.getElementById('heroEmail').value, document.getElementById('heroBtn'), document.getElementById('heroFeedback'));
+    // User menu dropdown toggle
+    document.getElementById('userMenuBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('userMenu').classList.toggle('open');
     });
-    document.getElementById('ctaForm').addEventListener('submit', e => {
-      e.preventDefault();
-      submitWaitlist(document.getElementById('ctaEmail').value, document.getElementById('ctaBtn'), document.getElementById('ctaFeedback'));
-    });
+    document.addEventListener('click', () => document.getElementById('userMenu').classList.remove('open'));
 
-    // ── Calendar interactive ──
+    // Auth modal
+    function openAuthModal(mode = 'login', afterFn = null) {
+      authAfterFn = afterFn;
+      switchAuthTab(mode);
+      document.getElementById('authModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        const el = mode === 'login' ? document.getElementById('loginEmail') : document.getElementById('signupName');
+        el?.focus();
+      }, 250);
+    }
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('open');
+      document.body.style.overflow = '';
+      authAfterFn = null;
+    }
+    document.getElementById('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuthModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuthModal(); closeReservations(); } });
+
+    function switchAuthTab(mode) {
+      document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+      document.getElementById('tabSignup').classList.toggle('active', mode === 'signup');
+      document.getElementById('loginForm').style.display  = mode === 'login'  ? '' : 'none';
+      document.getElementById('signupForm').style.display = mode === 'signup' ? '' : 'none';
+      document.getElementById('loginError').textContent   = '';
+      document.getElementById('signupError').textContent  = '';
+    }
+
+    async function submitLogin() {
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const btn      = document.getElementById('loginSubmit');
+      const errEl    = document.getElementById('loginError');
+      errEl.textContent = '';
+      if (!email || !password) { errEl.textContent = 'Completa todos los campos.'; return; }
+      btn.disabled = true; btn.textContent = 'Ingresando…';
+      try {
+        const res  = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+        const data = await res.json();
+        if (res.ok) {
+          currentUser = data.user;
+          updateNavAuth();
+          closeAuthModal();
+          window._calReload?.();
+          authAfterFn?.();
+        } else {
+          errEl.textContent = data.error || 'Error al ingresar.';
+        }
+      } catch { errEl.textContent = 'Error de conexión. Intenta de nuevo.'; }
+      btn.disabled = false; btn.textContent = 'Ingresar →';
+    }
+
+    async function submitSignup() {
+      const name     = document.getElementById('signupName').value.trim();
+      const email    = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const btn      = document.getElementById('signupSubmit');
+      const errEl    = document.getElementById('signupError');
+      errEl.textContent = '';
+      if (!name || !email || !password) { errEl.textContent = 'Completa todos los campos.'; return; }
+      if (password.length < 8) { errEl.textContent = 'La contraseña debe tener al menos 8 caracteres.'; return; }
+      btn.disabled = true; btn.textContent = 'Creando cuenta…';
+      try {
+        const res  = await fetch('/api/auth/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
+        const data = await res.json();
+        if (res.ok) {
+          currentUser = data.user;
+          updateNavAuth();
+          closeAuthModal();
+          window._calReload?.();
+          authAfterFn?.();
+        } else {
+          errEl.textContent = data.error || 'Error al crear la cuenta.';
+        }
+      } catch { errEl.textContent = 'Error de conexión. Intenta de nuevo.'; }
+      btn.disabled = false; btn.textContent = 'Crear cuenta →';
+    }
+
+    async function logout() {
+      document.getElementById('userMenu').classList.remove('open');
+      await fetch('/api/auth/logout', { method: 'POST' });
+      currentUser = null;
+      updateNavAuth();
+      window._calReload?.();
+    }
+
+    // Enter key on auth forms
+    document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') submitLogin(); });
+    document.getElementById('signupPassword').addEventListener('keydown', e => { if (e.key === 'Enter') submitSignup(); });
+
+    // ════════════════════════════════════════
+    // RESERVATIONS MODAL
+    // ════════════════════════════════════════
+    function openReservations() {
+      document.getElementById('userMenu').classList.remove('open');
+      document.getElementById('reservationsModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      loadReservations();
+    }
+    function closeReservations() {
+      document.getElementById('reservationsModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('reservationsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeReservations(); });
+
+    const DAY_SHORT_RES = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const MON_SHORT_RES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+    async function loadReservations() {
+      const listEl     = document.getElementById('reservationsList');
+      const subtitleEl = document.getElementById('resSubtitle');
+      listEl.innerHTML = '<div class="session-skeleton" style="border-radius:12px"><div class="skel-block" style="width:44px;height:60px;border-radius:8px;flex-shrink:0"></div><div style="flex:1;display:flex;flex-direction:column;gap:0.5rem"><div class="skel-block" style="width:60%;height:14px"></div><div class="skel-block" style="width:40%;height:12px"></div></div></div>';
+
+      try {
+        const res  = await fetch('/api/user/reservations');
+        const data = await res.json();
+        if (!res.ok) { listEl.innerHTML = `<div class="empty-reservations"><p>${data.error}</p></div>`; return; }
+
+        if (!data.length) {
+          subtitleEl.textContent = 'Aún no tienes reservas';
+          listEl.innerHTML = `<div class="empty-reservations">
+            <i data-lucide="calendar-x" width="36" height="36" style="color:var(--text2);margin:0 auto;display:block"></i>
+            <p>Explora las sesiones disponibles y reserva tu primer lugar.</p>
+            <button onclick="closeReservations();document.getElementById('sessions').scrollIntoView({behavior:'smooth'})" style="margin-top:1rem;padding:0.6rem 1.2rem;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:0.875rem;font-weight:600;font-family:inherit">Ver sesiones →</button>
+          </div>`;
+          lucide.createIcons({ nodes: [listEl] });
+          return;
+        }
+
+        const upcoming = data.filter(r => r.status !== 'past').length;
+        subtitleEl.textContent = `${data.length} reserva${data.length !== 1 ? 's' : ''} · ${upcoming} próxima${upcoming !== 1 ? 's' : ''}`;
+
+        listEl.innerHTML = data.map(r => {
+          const dt     = new Date(r.session_date + 'T12:00:00');
+          const dayStr = DAY_SHORT_RES[dt.getDay()].toUpperCase();
+          const dayNum = String(dt.getDate()).padStart(2, '0');
+          const monStr = MON_SHORT_RES[dt.getMonth()];
+          const statusLabel = r.status === 'live' ? 'Hoy' : r.status === 'past' ? 'Finalizada' : 'Confirmada';
+          return `<div class="reservation-item ${r.status === 'past' ? 'past-res' : ''}">
+  <div class="res-date ${r.type}">
+    <span class="res-day">${dayStr}</span>
+    <span class="res-num">${dayNum}</span>
+    <span class="res-mon">${monStr}</span>
+  </div>
+  <div class="res-info">
+    <div class="res-title">${r.num} — ${r.title}</div>
+    <div class="res-time">${r.start_time} – ${r.end_time} CLT</div>
+  </div>
+  <span class="res-status ${r.status === 'past' ? 'past' : r.status === 'live' ? 'live' : 'open'}">${statusLabel}</span>
+</div>`;
+        }).join('');
+        lucide.createIcons({ nodes: [listEl] });
+      } catch {
+        listEl.innerHTML = '<div class="empty-reservations"><p>Error al cargar. Intenta de nuevo.</p></div>';
+      }
+    }
+
+    // ════════════════════════════════════════
+    // CALENDAR + SESSIONS
+    // ════════════════════════════════════════
     (function () {
       const MONTH_LABELS = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
       const DAY_NAMES    = ['D','L','M','X','J','V','S'];
       const DAY_SHORT    = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
       const MON_SHORT    = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
 
-      let allSessions   = [];
-      let curYear       = new Date().getFullYear();
-      let curMonth      = new Date().getMonth();
-      let activeFilter  = 'all';
+      let allSessions    = [];
+      let curYear        = new Date().getFullYear();
+      let curMonth       = new Date().getMonth();
+      let activeFilter   = 'all';
       let activeSessionId = null;
       let minYear = curYear, minMonth = curMonth;
       let maxYear = curYear, maxMonth = curMonth;
@@ -1123,44 +839,32 @@
       const calNextBtn = document.getElementById('calNext');
       const sessionsEl = document.getElementById('sessionsList');
 
-      // ── Fetch sessions from API ──
       async function loadSessions() {
         try {
           const res = await fetch('/api/sessions');
-          if (!res.ok) throw new Error('fetch failed');
+          if (!res.ok) throw new Error();
           allSessions = await res.json();
-
           if (allSessions.length) {
-            const dates = allSessions.map(s => s.session_date);
-            const first = dates[0].split('-');
-            const last  = dates[dates.length - 1].split('-');
+            const first = allSessions[0].session_date.split('-');
+            const last  = allSessions[allSessions.length - 1].session_date.split('-');
             minYear = +first[0]; minMonth = +first[1] - 1;
             maxYear = +last[0];  maxMonth = +last[1] - 1;
-
-            // Start on first upcoming month (or first month with sessions)
-            const today = new Date().toISOString().slice(0, 10);
+            const today    = new Date().toISOString().slice(0, 10);
             const upcoming = allSessions.find(s => s.session_date >= today);
-            if (upcoming) {
-              const d = upcoming.session_date.split('-');
-              curYear = +d[0]; curMonth = +d[1] - 1;
-            } else {
-              curYear = minYear; curMonth = minMonth;
-            }
+            if (upcoming) { const d = upcoming.session_date.split('-'); curYear = +d[0]; curMonth = +d[1] - 1; }
+            else { curYear = minYear; curMonth = minMonth; }
           }
-        } catch {
-          allSessions = [];
-        }
+        } catch { allSessions = []; }
         renderCal();
         renderSessions();
       }
 
-      function forMonth(y, m) {
-        return allSessions.filter(s => {
-          const d = s.session_date.split('-');
-          return +d[0] === y && +d[1] - 1 === m;
-        });
-      }
+      // Expose for auth callbacks
+      window._calReload = loadSessions;
 
+      function forMonth(y, m) {
+        return allSessions.filter(s => { const d = s.session_date.split('-'); return +d[0] === y && +d[1] - 1 === m; });
+      }
       function filtered() {
         const ms = forMonth(curYear, curMonth);
         return activeFilter === 'all' ? ms : ms.filter(s => s.type === activeFilter);
@@ -1168,86 +872,56 @@
 
       function renderCal() {
         calLabel.textContent = MONTH_LABELS[curMonth] + ' ' + curYear;
-        calPrevBtn.disabled = (curYear === minYear && curMonth === minMonth);
-        calNextBtn.disabled = (curYear === maxYear && curMonth === maxMonth);
-
+        calPrevBtn.disabled  = (curYear === minYear && curMonth === minMonth);
+        calNextBtn.disabled  = (curYear === maxYear && curMonth === maxMonth);
         const ms = forMonth(curYear, curMonth);
         const byDay = {};
         ms.forEach(s => { byDay[+s.session_date.split('-')[2]] = s; });
-
         const daysInMonth = new Date(curYear, curMonth + 1, 0).getDate();
         const firstDay    = new Date(curYear, curMonth, 1).getDay();
-        const todayStr    = new Date().toISOString().slice(0, 10);
-        const todayDay    = new Date().getDate();
-        const todayYear   = new Date().getFullYear();
-        const todayMonth  = new Date().getMonth();
-
+        const td = new Date(); const todayYear = td.getFullYear(), todayMonth = td.getMonth(), todayDay = td.getDate();
         let html = DAY_NAMES.map(d => `<div class="cal-day-name">${d}</div>`).join('');
         for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
-
         for (let d = 1; d <= daysInMonth; d++) {
           const isToday = (curYear === todayYear && curMonth === todayMonth && d === todayDay);
           const s = byDay[d];
-          let cls = 'cal-day';
-          if (isToday) cls += ' today';
+          let cls = 'cal-day' + (isToday ? ' today' : '');
           if (s) {
-            cls += ` has-session session-${s.type}`;
-            if (s.id === activeSessionId) cls += ' cal-selected';
+            cls += ` has-session session-${s.type}${s.id === activeSessionId ? ' cal-selected' : ''}`;
             html += `<div class="${cls}" data-sid="${s.id}">${d}<span class="cal-dot"></span></div>`;
-          } else {
-            html += `<div class="${cls}">${d}</div>`;
-          }
+          } else { html += `<div class="${cls}">${d}</div>`; }
         }
-
         const rem = (7 - ((firstDay + daysInMonth) % 7)) % 7;
         for (let i = 0; i < rem; i++) html += '<div class="cal-day empty"></div>';
-
         calGridEl.innerHTML = html;
-        // Re-init lucide icons inside calendar
-        lucide.createIcons({ nodes: [calGridEl] });
-        calGridEl.querySelectorAll('.cal-day[data-sid]').forEach(el => {
-          el.addEventListener('click', () => selectSession(+el.dataset.sid));
-        });
+        calGridEl.querySelectorAll('.cal-day[data-sid]').forEach(el => el.addEventListener('click', () => selectSession(+el.dataset.sid)));
       }
 
       function statusHTML(s) {
-        if (s.status === 'live') {
-          return `<span class="session-status live"><span class="status-dot"></span>Hoy en vivo</span>`;
-        }
-        if (s.status === 'past') {
-          return `<span class="session-status past">Finalizada</span>`;
-        }
-        if (s.status === 'full') {
-          return `<span class="session-status full">Completa</span>`;
-        }
+        if (s.user_registered) return `<span class="session-status reserved"><i data-lucide="check" width="11" height="11"></i>Tu lugar</span>`;
+        if (s.status === 'live') return `<span class="session-status live"><span class="status-dot"></span>Hoy en vivo</span>`;
+        if (s.status === 'past') return `<span class="session-status past">Finalizada</span>`;
+        if (s.status === 'full') return `<span class="session-status full">Completa</span>`;
         return `<span class="session-status open">Abierta</span>`;
       }
 
-      function regFormHTML(s) {
+      function actionHTML(s) {
         if (s.status === 'past') return '';
-        if (s.status === 'full') {
-          return `<div class="reg-form-wrap">
-            <p style="font-size:0.82rem;color:var(--text2);">Esta sesión está completa. Anotate al waitlist para no perderte la siguiente.</p>
-            <a href="#waitlist" class="reg-btn" style="display:inline-block;margin-top:0.6rem;text-decoration:none;border-radius:8px;padding:0.6rem 1.1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:0.875rem;font-weight:700;">Waitlist →</a>
-          </div>`;
+        if (s.user_registered) {
+          return `<div class="session-action"><span class="reserved-badge"><i data-lucide="check-circle" width="14" height="14"></i>Tienes un lugar reservado</span></div>`;
         }
-        return `<div class="reg-form-wrap" id="reg-wrap-${s.id}">
-          <span class="reg-form-label">Reservar mi lugar</span>
-          <div class="reg-form-row">
-            <input class="reg-input" type="text"  placeholder="Tu nombre (opcional)" id="reg-name-${s.id}" />
-            <input class="reg-input" type="email" placeholder="tu@email.com"         id="reg-email-${s.id}" required />
-            <button class="reg-btn" id="reg-btn-${s.id}" onclick="registerSession(event, ${s.id})">Reservar →</button>
-          </div>
-          <div class="reg-feedback" id="reg-fb-${s.id}"></div>
-        </div>`;
+        if (s.status === 'full') {
+          return `<div class="session-action"><a href="#waitlist" class="login-to-reserve">Avisarme cuando haya lugar</a></div>`;
+        }
+        if (!currentUser) {
+          return `<div class="session-action"><button class="login-to-reserve" onclick="openAuthModal('login',()=>reserveSession(${s.id}))"><i data-lucide="log-in" width="14" height="14"></i>Inicia sesión para reservar</button></div>`;
+        }
+        return `<div class="session-action"><button class="reserve-btn" id="res-btn-${s.id}" onclick="reserveSession(${s.id})"><i data-lucide="calendar-plus" width="15" height="15"></i>Reservar mi lugar</button><div class="auth-error" id="res-err-${s.id}" style="margin-top:0.4rem;text-align:left"></div></div>`;
       }
 
       function renderSessions() {
         const list = filtered();
-        if (!list.length) {
-          sessionsEl.innerHTML = '<div class="no-sessions">No hay sesiones de este tipo en este mes.</div>';
-          return;
-        }
+        if (!list.length) { sessionsEl.innerHTML = '<div class="no-sessions">No hay sesiones de este tipo en este mes.</div>'; return; }
         sessionsEl.innerHTML = list.map(s => {
           const dt      = new Date(s.session_date + 'T12:00:00');
           const dayName = DAY_SHORT[dt.getDay()].toUpperCase();
@@ -1255,18 +929,12 @@
           const monStr  = MON_SHORT[dt.getMonth()];
           const isActive = s.id === activeSessionId;
           const registered = s.registered_count || 0;
-          const total = s.max_spots;
-          const pct = s.status === 'full' ? 100 : Math.round((registered / total) * 100);
-          const spotsLabel = s.status === 'full'
-            ? `${total} / ${total} lugares`
-            : `${registered} / ${total} lugares`;
+          const pct = s.status === 'full' ? 100 : Math.round((registered / s.max_spots) * 100);
+          const spotsLabel = s.status === 'full' ? `${s.max_spots} / ${s.max_spots} lugares` : `${registered} / ${s.max_spots} lugares`;
           const chips = (Array.isArray(s.format) ? s.format : []).map(f => `<span class="format-chip">${f}</span>`).join('');
-
           return `<div class="session-card ${s.status==='live'?'happening':''} ${s.status==='past'?'past':''} ${s.type==='hackathon'?'hackathon-card':''} ${isActive?'active':''}" data-sid="${s.id}">
   <div class="session-date-badge ${s.type==='hackathon'?'hackathon-badge':'weekly'}">
-    <span class="s-day">${dayName}</span>
-    <span class="s-num">${dayNum}</span>
-    <span class="s-month">${monStr}</span>
+    <span class="s-day">${dayName}</span><span class="s-num">${dayNum}</span><span class="s-month">${monStr}</span>
   </div>
   <div class="session-info">
     <div class="session-meta">
@@ -1279,26 +947,21 @@
       <span><i data-lucide="timer" width="13" height="13"></i>${s.type==='hackathon'?'10 horas':'3 horas'}</span>
       <span><i data-lucide="users" width="13" height="13"></i>${spotsLabel}</span>
     </div>
-    <div class="spot-bar-wrap">
-      <div class="spot-bar-fill ${s.status==='full'?'full':s.type}" style="width:${pct}%"></div>
-    </div>
+    <div class="spot-bar-wrap"><div class="spot-bar-fill ${s.status==='full'?'full':s.type}" style="width:${pct}%"></div></div>
     <div class="session-expand">
       <div class="session-expand-inner">
         <p class="session-expand-desc">${s.description}</p>
         ${chips ? `<div class="session-format">${chips}</div>` : ''}
-        ${regFormHTML(s)}
+        ${actionHTML(s)}
       </div>
     </div>
   </div>
 </div>`;
         }).join('');
-
-        // Init lucide icons in rendered cards
         lucide.createIcons({ nodes: [sessionsEl] });
-
         sessionsEl.querySelectorAll('.session-card').forEach(card => {
           card.addEventListener('click', e => {
-            if (e.target.closest('a,button,input')) return;
+            if (e.target.closest('a,button')) return;
             const sid = +card.dataset.sid;
             selectSession(activeSessionId === sid ? null : sid);
           });
@@ -1309,87 +972,46 @@
         activeSessionId = sid;
         renderCal();
         renderSessions();
-        if (sid) {
-          const card = sessionsEl.querySelector(`[data-sid="${sid}"]`);
-          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+        if (sid) { const card = sessionsEl.querySelector(`[data-sid="${sid}"]`); if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
       }
 
-      calPrevBtn.addEventListener('click', () => {
-        if (curYear === minYear && curMonth === minMonth) return;
-        if (--curMonth < 0) { curMonth = 11; curYear--; }
-        activeSessionId = null; renderCal(); renderSessions();
-      });
-
-      calNextBtn.addEventListener('click', () => {
-        if (curYear === maxYear && curMonth === maxMonth) return;
-        if (++curMonth > 11) { curMonth = 0; curYear++; }
-        activeSessionId = null; renderCal(); renderSessions();
-      });
-
+      calPrevBtn.addEventListener('click', () => { if (--curMonth < 0) { curMonth = 11; curYear--; } activeSessionId = null; renderCal(); renderSessions(); });
+      calNextBtn.addEventListener('click', () => { if (++curMonth > 11) { curMonth = 0; curYear++; } activeSessionId = null; renderCal(); renderSessions(); });
       document.querySelectorAll('.filter-tab').forEach(tab => {
         tab.addEventListener('click', () => {
           activeFilter = tab.dataset.filter;
           document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
-          activeSessionId = null;
-          renderSessions();
+          activeSessionId = null; renderSessions();
         });
       });
 
       loadSessions();
     })();
 
-    // ── Session registration ──
-    window.registerSession = async function(e, sessionId) {
-      e.stopPropagation();
-      const btn      = document.getElementById(`reg-btn-${sessionId}`);
-      const emailEl  = document.getElementById(`reg-email-${sessionId}`);
-      const nameEl   = document.getElementById(`reg-name-${sessionId}`);
-      const feedback = document.getElementById(`reg-fb-${sessionId}`);
-
-      const email = emailEl ? emailEl.value.trim() : '';
-      const name  = nameEl  ? nameEl.value.trim()  : '';
-
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        feedback.textContent = 'Ingresá un email válido.';
-        feedback.className = 'reg-feedback error';
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Reservando…';
-      feedback.textContent = '';
-      feedback.className = 'reg-feedback';
-
+    // ── Session reservation ──
+    window.reserveSession = async function(sessionId) {
+      if (!currentUser) { openAuthModal('login', () => reserveSession(sessionId)); return; }
+      const btn   = document.getElementById(`res-btn-${sessionId}`);
+      const errEl = document.getElementById(`res-err-${sessionId}`);
+      if (btn) { btn.disabled = true; btn.innerHTML = '<i data-lucide="loader" width="15" height="15"></i>Reservando…'; lucide.createIcons({ nodes: [btn] }); }
+      if (errEl) errEl.textContent = '';
       try {
-        const res = await fetch(`/api/sessions/${sessionId}/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, name: name || undefined }),
-        });
+        const res  = await fetch(`/api/sessions/${sessionId}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
         const data = await res.json();
-
-        if (res.ok) {
-          feedback.textContent = data.message || 'Lugar reservado. Revisá tu bandeja.';
-          feedback.className = 'reg-feedback success';
-          btn.textContent = 'Reservado';
-          btn.style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
-          if (emailEl) emailEl.disabled = true;
-          if (nameEl)  nameEl.disabled  = true;
-        } else {
-          feedback.textContent = data.error || 'Algo salió mal. Intentá de nuevo.';
-          feedback.className = 'reg-feedback error';
-          btn.disabled = false;
-          btn.textContent = 'Reservar →';
+        if (res.ok) { window._calReload?.(); }
+        else {
+          if (btn) { btn.disabled = false; btn.innerHTML = '<i data-lucide="calendar-plus" width="15" height="15"></i>Reservar mi lugar'; lucide.createIcons({ nodes: [btn] }); }
+          if (errEl) errEl.textContent = data.error || 'Error al reservar. Intenta de nuevo.';
         }
       } catch {
-        feedback.textContent = 'Error de conexión. Intentá de nuevo.';
-        feedback.className = 'reg-feedback error';
-        btn.disabled = false;
-        btn.textContent = 'Reservar →';
+        if (btn) { btn.disabled = false; btn.textContent = 'Reservar mi lugar'; }
+        if (errEl) errEl.textContent = 'Error de conexión. Intenta de nuevo.';
       }
     };
+
+    // ── Init ──
+    loadAuth();
   </script>
 </body>
 </html>
