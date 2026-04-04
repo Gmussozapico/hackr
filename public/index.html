@@ -588,6 +588,90 @@
       opacity: 0.55;
     }
 
+    /* ── FILTER TABS ── */
+    .filter-tabs { display: flex; gap: 0.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .filter-tab {
+      padding: 0.5rem 1.1rem; border-radius: 100px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text2); font-size: 0.83rem; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .filter-tab:hover { border-color: var(--accent2); color: var(--text); }
+    .filter-tab.active { background: rgba(124,58,237,0.15); border-color: var(--accent); color: var(--accent2); }
+
+    /* ── CAL NAV BUTTON ── */
+    .cal-nav-btn {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text2); width: 28px; height: 28px; border-radius: 6px;
+      cursor: pointer; font-size: 1.2rem; line-height: 1; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .cal-nav-btn:hover:not(:disabled) { border-color: var(--accent2); color: var(--text); }
+    .cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* ── CALENDAR SELECTED DAY ── */
+    .cal-day.cal-selected { background: rgba(124,58,237,0.3) !important; border: 1px solid var(--accent2); }
+    .cal-day[data-sid] { cursor: pointer; }
+    .cal-day[data-sid]:hover:not(.today):not(.cal-selected) { background: rgba(255,255,255,0.07); }
+
+    /* ── SPOT PROGRESS BAR ── */
+    .spot-bar-wrap { width: 100%; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; margin-top: 0.75rem; overflow: hidden; }
+    .spot-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+    .spot-bar-fill.weekly { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .spot-bar-fill.hackathon { background: linear-gradient(90deg, #ea580c, var(--accent3)); }
+    .spot-bar-fill.full { background: rgba(160,160,180,0.35); }
+
+    /* ── SESSION EXPAND ── */
+    .session-card { cursor: pointer; }
+    .session-expand { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .session-card.active .session-expand { max-height: 240px; }
+    .session-card.active { border-color: var(--accent2) !important; box-shadow: 0 8px 32px rgba(124,58,237,0.15) !important; }
+    .session-card.hackathon-card.active { border-color: var(--accent3) !important; box-shadow: 0 8px 32px rgba(249,115,22,0.15) !important; }
+    .session-expand-inner { padding-top: 0.9rem; border-top: 1px solid var(--border); margin-top: 0.85rem; }
+    .session-expand-desc { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 0.8rem; }
+    .session-format { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .format-chip { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 6px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+    .session-expand-cta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.82rem; font-weight: 600; color: var(--accent2); text-decoration: none; transition: color 0.2s; }
+    .session-expand-cta:hover { color: var(--text); }
+    .no-sessions { text-align: center; color: var(--text2); font-size: 0.9rem; padding: 3rem 1rem; font-style: italic; }
+
+    /* ── PARTNERS ── */
+    .partners-section { background: var(--bg2); border-top: 1px solid var(--border); }
+    .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+    .partner-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .partner-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .partner-card.hackathon-p::before { background: linear-gradient(90deg, var(--accent3), #f97316); }
+    .partner-card.venue-p::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .partner-card.tech-p::before { background: linear-gradient(90deg, #4ade80, #22d3ee); }
+    .partner-card:hover { transform: translateY(-4px); border-color: rgba(124,58,237,0.3); box-shadow: 0 12px 40px rgba(124,58,237,0.1); }
+    .partner-card:hover::before { opacity: 1; }
+    .partner-badge {
+      display: inline-block; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.22rem 0.65rem; border-radius: 100px; margin-bottom: 1.25rem;
+    }
+    .partner-badge.hackathon-p { background: rgba(249,115,22,0.12); color: var(--accent3); border: 1px solid rgba(249,115,22,0.25); }
+    .partner-badge.venue-p { background: rgba(124,58,237,0.12); color: var(--accent2); border: 1px solid rgba(124,58,237,0.25); }
+    .partner-badge.tech-p { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+    .partner-logo-name {
+      font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 0.65rem; display: block;
+      background: linear-gradient(135deg, var(--text) 60%, var(--text2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .partner-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+    .partner-card p { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 1rem; }
+    .partner-domain { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text2); opacity: 0.55; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 800px) {
       .calendar-layout { grid-template-columns: 1fr; }
@@ -722,152 +806,64 @@
       <h2 class="section-title reveal">El ritmo que te faltaba.</h2>
       <p class="section-subtitle reveal">Sesiones semanales fijas + hackathons de fin de semana. Siempre hay una próxima fecha para construir.</p>
 
-      <div class="calendar-layout reveal">
-        <!-- Mini calendar -->
+      <div class="filter-tabs reveal">
+        <button class="filter-tab active" data-filter="all">Todas</button>
+        <button class="filter-tab" data-filter="weekly">Sesiones semanales</button>
+        <button class="filter-tab" data-filter="hackathon">Hackathons</button>
+      </div>
+
+      <div class="calendar-layout">
+        <!-- Mini calendar (rendered by JS) -->
         <div class="cal-mini">
           <div class="cal-header">
-            <span class="cal-month-label">ABRIL 2026</span>
+            <button class="cal-nav-btn" id="calPrev">‹</button>
+            <span class="cal-month-label" id="calMonthLabel"></span>
+            <button class="cal-nav-btn" id="calNext">›</button>
           </div>
-          <div class="cal-grid">
-            <div class="cal-day-name">D</div>
-            <div class="cal-day-name">L</div>
-            <div class="cal-day-name">M</div>
-            <div class="cal-day-name">X</div>
-            <div class="cal-day-name">J</div>
-            <div class="cal-day-name">V</div>
-            <div class="cal-day-name">S</div>
-            <!-- Semana 1 (Apr 1 = martes) -->
-            <div class="cal-day empty"></div>
-            <div class="cal-day empty"></div>
-            <div class="cal-day">1</div>
-            <div class="cal-day">2</div>
-            <div class="cal-day today has-session session-weekly">3<span class="cal-dot"></span></div>
-            <div class="cal-day">4</div>
-            <div class="cal-day">5</div>
-            <!-- Semana 2 -->
-            <div class="cal-day">6</div>
-            <div class="cal-day">7</div>
-            <div class="cal-day">8</div>
-            <div class="cal-day">9</div>
-            <div class="cal-day has-session session-weekly">10<span class="cal-dot"></span></div>
-            <div class="cal-day">11</div>
-            <div class="cal-day">12</div>
-            <!-- Semana 3 -->
-            <div class="cal-day">13</div>
-            <div class="cal-day">14</div>
-            <div class="cal-day">15</div>
-            <div class="cal-day">16</div>
-            <div class="cal-day has-session session-weekly">17<span class="cal-dot"></span></div>
-            <div class="cal-day">18</div>
-            <div class="cal-day has-session session-hackathon">19<span class="cal-dot"></span></div>
-            <!-- Semana 4 -->
-            <div class="cal-day has-session session-hackathon">20<span class="cal-dot"></span></div>
-            <div class="cal-day">21</div>
-            <div class="cal-day">22</div>
-            <div class="cal-day">23</div>
-            <div class="cal-day has-session session-weekly">24<span class="cal-dot"></span></div>
-            <div class="cal-day">25</div>
-            <div class="cal-day">26</div>
-            <!-- Semana 5 -->
-            <div class="cal-day">27</div>
-            <div class="cal-day">28</div>
-            <div class="cal-day">29</div>
-            <div class="cal-day">30</div>
-            <div class="cal-day empty"></div>
-            <div class="cal-day empty"></div>
-            <div class="cal-day empty"></div>
-          </div>
+          <div class="cal-grid" id="calGrid"></div>
           <div class="cal-legend">
             <span class="legend-item"><span class="legend-dot weekly"></span> Sesión semanal</span>
             <span class="legend-item"><span class="legend-dot hackathon"></span> Hackathon</span>
           </div>
         </div>
 
-        <!-- Session cards -->
-        <div class="sessions-list">
-          <div class="session-card happening">
-            <div class="session-date-badge weekly">
-              <span class="s-day">JUE</span>
-              <span class="s-num">03</span>
-              <span class="s-month">ABR</span>
-            </div>
-            <div class="session-info">
-              <div class="session-meta">
-                <span class="session-tag weekly">Sesión Semanal</span>
-                <span class="session-status live">🔴 Hoy</span>
-              </div>
-              <h3 class="session-title">Sesión #01 — Kick-off de la comunidad</h3>
-              <div class="session-details">
-                <span>🕖 19:00 – 22:00 ART</span>
-                <span>⏱ 3 horas</span>
-                <span>👥 12 / 15 lugares</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="session-card upcoming">
-            <div class="session-date-badge weekly">
-              <span class="s-day">JUE</span>
-              <span class="s-num">10</span>
-              <span class="s-month">ABR</span>
-            </div>
-            <div class="session-info">
-              <div class="session-meta">
-                <span class="session-tag weekly">Sesión Semanal</span>
-                <span class="session-status open">Abierta</span>
-              </div>
-              <h3 class="session-title">Sesión #02</h3>
-              <div class="session-details">
-                <span>🕖 19:00 – 22:00 ART</span>
-                <span>⏱ 3 horas</span>
-                <span>👥 8 / 15 lugares</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="session-card upcoming hackathon-card">
-            <div class="session-date-badge hackathon-badge">
-              <span class="s-day">SÁB</span>
-              <span class="s-num">19</span>
-              <span class="s-month">ABR</span>
-            </div>
-            <div class="session-info">
-              <div class="session-meta">
-                <span class="session-tag hackathon">Hackathon</span>
-                <span class="session-status open">Abierta</span>
-              </div>
-              <h3 class="session-title">Build in 1 Day — de 0 a lanzado</h3>
-              <div class="session-details">
-                <span>🕙 10:00 – 20:00 ART</span>
-                <span>⏱ 10 horas</span>
-                <span>👥 6 / 20 lugares</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="session-card upcoming">
-            <div class="session-date-badge weekly">
-              <span class="s-day">JUE</span>
-              <span class="s-num">24</span>
-              <span class="s-month">ABR</span>
-            </div>
-            <div class="session-info">
-              <div class="session-meta">
-                <span class="session-tag weekly">Sesión Semanal</span>
-                <span class="session-status full">Completa</span>
-              </div>
-              <h3 class="session-title">Sesión #03</h3>
-              <div class="session-details">
-                <span>🕖 19:00 – 22:00 ART</span>
-                <span>⏱ 3 horas</span>
-                <span>👥 15 / 15 lugares</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Session cards (rendered by JS) -->
+        <div class="sessions-list" id="sessionsList"></div>
       </div>
 
       <p class="cal-disclaimer reveal">* Maqueta ilustrativa — el calendario real se confirma con la comunidad fundadora.</p>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="partners-section" id="partners">
+    <div class="section-inner">
+      <p class="section-label reveal">Partners</p>
+      <h2 class="section-title reveal">Respaldado por quien<br />construye Santiago.</h2>
+      <p class="section-subtitle reveal">Hackr no arranca solo. Trabajamos con organizaciones que comparten la misma obsesión por construir cosas reales.</p>
+      <div class="partners-grid">
+        <div class="partner-card hackathon-p reveal">
+          <span class="partner-badge hackathon-p">Hackathon Partner</span>
+          <span class="partner-logo-name">Platanus_</span>
+          <h3>Mentorship & comunidad</h3>
+          <p>El equipo de Platanus Ventures da feedback directo a los mejores proyectos de cada hackathon. Las ideas más interesantes entran en su radar de inversión.</p>
+          <span class="partner-domain">platanus.vc</span>
+        </div>
+        <div class="partner-card venue-p reveal">
+          <span class="partner-badge venue-p">Venue Partner</span>
+          <span class="partner-logo-name">Awake_</span>
+          <h3>Espacio para construir</h3>
+          <p>Espacios de trabajo en Santiago Centro y Las Condes para las sesiones presenciales y hackathons de fin de semana. Ambiente diseñado para el foco profundo.</p>
+          <span class="partner-domain">awake.cl</span>
+        </div>
+        <div class="partner-card tech-p reveal">
+          <span class="partner-badge tech-p">Tech Partner</span>
+          <span class="partner-logo-name">Khipu_</span>
+          <h3>Pagos desde el día 1</h3>
+          <p>API de pagos chilena para los proyectos que quieran cobrar desde el primer sprint. Créditos de API exclusivos para los builders de Hackr.</p>
+          <span class="partner-domain">khipu.com</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -988,6 +984,185 @@
       e.preventDefault();
       submitWaitlist(document.getElementById('ctaEmail').value, document.getElementById('ctaBtn'), document.getElementById('ctaFeedback'));
     });
+
+    // ── Calendar interactive ──
+    (function () {
+      const MONTH_LABELS = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+      const DAY_NAMES    = ['D','L','M','X','J','V','S'];
+      const DAY_SHORT    = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+      const MON_SHORT    = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+      const sessions = [
+        { id:1,  date:'2026-04-03', type:'weekly',   num:'#01',   title:'Kick-off de la comunidad',        time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:12, total:15, status:'live', desc:'Primera sesión oficial. Presentaciones, declaramos objetivos, sprints con cámaras encendidas y la primera ronda de demos.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+        { id:2,  date:'2026-04-10', type:'weekly',   num:'#02',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:8,  total:15, status:'open', desc:'Check-in grupal, sprint de 2h20 con cámaras encendidas y 5 min de demo por persona. Llegás con tu objetivo, te vas con algo hecho.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+        { id:3,  date:'2026-04-17', type:'weekly',   num:'#03',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:5,  total:15, status:'open', desc:'Seguimos el ritmo. Esta semana más gente del waitlist entra al grupo.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+        { id:4,  date:'2026-04-19', type:'hackathon', num:'HK·01', title:'Build in 1 Day: de 0 a lanzado', time:'10:00 – 20:00 CLT', duration:'10 horas', spots:6,  total:20, status:'open', desc:'El objetivo: lanzar algo real antes de las 20:00. Mañana de ideación, tarde de sprint intenso, cierre con demos y feedback del grupo.', format:['Mañana: ideación','Tarde: sprint duro','18:00 demos + feedback'] },
+        { id:5,  date:'2026-04-24', type:'weekly',   num:'#04',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:0,  total:15, status:'full', desc:'Sesión completa. Anotate al waitlist para asegurar tu lugar en las próximas sesiones.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+        { id:6,  date:'2026-05-08', type:'weekly',   num:'#05',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Segunda semana de mayo. El proyecto avanza semana a semana.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+        { id:7,  date:'2026-05-15', type:'weekly',   num:'#06',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Formato estándar. Declarás tu objetivo, sprinteás, mostrás.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+        { id:8,  date:'2026-05-17', type:'hackathon', num:'HK·02', title:'Hackathon × Platanus Ventures',  time:'10:00 – 20:00 CLT', duration:'10 horas', spots:25, total:25, status:'open', desc:'En colaboración con Platanus Ventures. Los mejores proyectos reciben feedback directo del equipo de inversión. Las ideas más interesantes entran en su radar.', format:['Mañana: ideación','Tarde: sprint duro','18:30 demos ante Platanus'] },
+        { id:9,  date:'2026-05-22', type:'weekly',   num:'#07',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Penúltima sesión del mes. Seguimos construyendo.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+        { id:10, date:'2026-05-29', type:'weekly',   num:'#08',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Cierre de mayo. ¿Cuánto construiste este mes?', format:['10 min check-in','2h 20min sprint','30 min demos'] },
+      ];
+
+      let curYear = 2026, curMonth = 3; // Abril (0-indexed)
+      let activeFilter = 'all';
+      let activeSessionId = null;
+      const MIN = { year:2026, month:3 }, MAX = { year:2026, month:4 };
+
+      const calGridEl   = document.getElementById('calGrid');
+      const calLabel    = document.getElementById('calMonthLabel');
+      const calPrevBtn  = document.getElementById('calPrev');
+      const calNextBtn  = document.getElementById('calNext');
+      const sessionsEl  = document.getElementById('sessionsList');
+
+      function forMonth(y, m) {
+        return sessions.filter(s => {
+          const d = new Date(s.date + 'T12:00:00');
+          return d.getFullYear() === y && d.getMonth() === m;
+        });
+      }
+
+      function filtered() {
+        const ms = forMonth(curYear, curMonth);
+        return activeFilter === 'all' ? ms : ms.filter(s => s.type === activeFilter);
+      }
+
+      function renderCal() {
+        calLabel.textContent = MONTH_LABELS[curMonth] + ' ' + curYear;
+        calPrevBtn.disabled = (curYear === MIN.year && curMonth === MIN.month);
+        calNextBtn.disabled = (curYear === MAX.year && curMonth === MAX.month);
+
+        const ms = forMonth(curYear, curMonth);
+        const byDay = {};
+        ms.forEach(s => { byDay[+s.date.split('-')[2]] = s; });
+        // Día 20 abril = día 2 del hackathon HK·01
+        if (curYear === 2026 && curMonth === 3) byDay[20] = { type:'hackathon', id:4 };
+
+        const daysInMonth = new Date(curYear, curMonth + 1, 0).getDate();
+        const firstDay    = new Date(curYear, curMonth, 1).getDay();
+
+        let html = DAY_NAMES.map(d => `<div class="cal-day-name">${d}</div>`).join('');
+        for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+
+        for (let d = 1; d <= daysInMonth; d++) {
+          const isToday = (curYear === 2026 && curMonth === 3 && d === 3);
+          const s = byDay[d];
+          let cls = 'cal-day';
+          if (isToday) cls += ' today';
+          if (s) {
+            cls += ` has-session session-${s.type}`;
+            if (s.id === activeSessionId) cls += ' cal-selected';
+            html += `<div class="${cls}" data-sid="${s.id}">${d}<span class="cal-dot"></span></div>`;
+          } else {
+            html += `<div class="${cls}">${d}</div>`;
+          }
+        }
+
+        const rem = (7 - ((firstDay + daysInMonth) % 7)) % 7;
+        for (let i = 0; i < rem; i++) html += '<div class="cal-day empty"></div>';
+
+        calGridEl.innerHTML = html;
+        calGridEl.querySelectorAll('.cal-day[data-sid]').forEach(el => {
+          el.addEventListener('click', () => selectSession(+el.dataset.sid));
+        });
+      }
+
+      function renderSessions() {
+        const list = filtered();
+        if (!list.length) {
+          sessionsEl.innerHTML = '<div class="no-sessions">No hay sesiones de este tipo en este mes.</div>';
+          return;
+        }
+        sessionsEl.innerHTML = list.map(s => {
+          const dt      = new Date(s.date + 'T12:00:00');
+          const dayName = DAY_SHORT[dt.getDay()].toUpperCase();
+          const dayNum  = String(dt.getDate()).padStart(2, '0');
+          const monStr  = MON_SHORT[dt.getMonth()];
+          const isActive = s.id === activeSessionId;
+          const pct = s.status === 'full' ? 100 : Math.round(((s.total - s.spots) / s.total) * 100);
+          const spotsLabel = s.status === 'full' ? `${s.total} / ${s.total} lugares` : `${s.total - s.spots} / ${s.total} lugares`;
+          const statusHtml = s.status === 'live' ? '<span class="session-status live">🔴 Hoy</span>'
+            : s.status === 'full' ? '<span class="session-status full">Completa</span>'
+            : '<span class="session-status open">Abierta</span>';
+          const ctaText = s.status === 'full' ? 'Avisame cuando haya lugar →' : 'Quiero un lugar →';
+          const chips = s.format.map(f => `<span class="format-chip">${f}</span>`).join('');
+
+          return `<div class="session-card ${s.status==='live'?'happening':'upcoming'} ${s.type==='hackathon'?'hackathon-card':''} ${isActive?'active':''}" data-sid="${s.id}">
+  <div class="session-date-badge ${s.type==='hackathon'?'hackathon-badge':'weekly'}">
+    <span class="s-day">${dayName}</span>
+    <span class="s-num">${dayNum}</span>
+    <span class="s-month">${monStr}</span>
+  </div>
+  <div class="session-info">
+    <div class="session-meta">
+      <span class="session-tag ${s.type}">${s.type==='hackathon'?'Hackathon':'Sesión Semanal'}</span>
+      ${statusHtml}
+    </div>
+    <h3 class="session-title">${s.num} — ${s.title}</h3>
+    <div class="session-details">
+      <span>🕖 ${s.time}</span>
+      <span>⏱ ${s.duration}</span>
+      <span>👥 ${spotsLabel}</span>
+    </div>
+    <div class="spot-bar-wrap">
+      <div class="spot-bar-fill ${s.status==='full'?'full':s.type}" style="width:${pct}%"></div>
+    </div>
+    <div class="session-expand">
+      <div class="session-expand-inner">
+        <p class="session-expand-desc">${s.desc}</p>
+        <div class="session-format">${chips}</div>
+        <a href="#waitlist" class="session-expand-cta">${ctaText}</a>
+      </div>
+    </div>
+  </div>
+</div>`;
+        }).join('');
+
+        sessionsEl.querySelectorAll('.session-card').forEach(card => {
+          card.addEventListener('click', e => {
+            if (e.target.closest('a')) return;
+            const sid = +card.dataset.sid;
+            selectSession(activeSessionId === sid ? null : sid);
+          });
+        });
+      }
+
+      function selectSession(sid) {
+        activeSessionId = sid;
+        renderCal();
+        renderSessions();
+        if (sid) {
+          const card = sessionsEl.querySelector(`[data-sid="${sid}"]`);
+          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+
+      calPrevBtn.addEventListener('click', () => {
+        if (curYear === MIN.year && curMonth === MIN.month) return;
+        if (--curMonth < 0) { curMonth = 11; curYear--; }
+        activeSessionId = null; renderCal(); renderSessions();
+      });
+
+      calNextBtn.addEventListener('click', () => {
+        if (curYear === MAX.year && curMonth === MAX.month) return;
+        if (++curMonth > 11) { curMonth = 0; curYear++; }
+        activeSessionId = null; renderCal(); renderSessions();
+      });
+
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          activeFilter = tab.dataset.filter;
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeSessionId = null;
+          renderSessions();
+        });
+      });
+
+      renderCal();
+      renderSessions();
+    })();
   </script>
 </body>
 </html>
