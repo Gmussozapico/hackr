@@ -7,6 +7,7 @@
   <meta name="description" content="Hackr reúne a emprendedores como vos para sesiones intensivas de construcción. Sin excusas. Con otros. Con deadline." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -178,6 +179,13 @@
     }
     .stat-label { font-size: 0.8rem; color: var(--text2); margin-top: 0.1rem; letter-spacing: 0.04em; text-transform: uppercase; }
 
+    /* ── LUCIDE ICONS ── */
+    .icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon svg { display: block; }
+
     /* ── HOW IT WORKS ── */
     section { padding: 6rem 1.5rem; }
     .section-inner { max-width: 1100px; margin: 0 auto; }
@@ -225,7 +233,10 @@
       letter-spacing: 0.1em; margin-bottom: 1.25rem;
     }
     .step-icon {
-      font-size: 2.25rem; margin-bottom: 1rem; display: block;
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; color: var(--accent2);
     }
     .step-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
     .step-card p { color: var(--text2); font-size: 0.95rem; line-height: 1.65; }
@@ -244,7 +255,12 @@
       transition: transform 0.2s, border-color 0.2s;
     }
     .why-card:hover { transform: translateY(-3px); border-color: rgba(249,115,22,0.4); }
-    .why-icon { font-size: 1.8rem; margin-bottom: 0.75rem; display: block; }
+    .why-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.85rem; color: var(--accent3);
+    }
     .why-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
     .why-card p { color: var(--text2); font-size: 0.9rem; line-height: 1.6; }
 
@@ -282,9 +298,10 @@
       user-select: none;
     }
     .faq-question:hover { background: var(--bg3); }
-    .faq-question .chevron {
+    .faq-chevron {
+      color: var(--accent2); flex-shrink: 0;
       transition: transform 0.25s;
-      color: var(--accent2); font-size: 1.1rem; flex-shrink: 0;
+      display: flex; align-items: center;
     }
     .faq-answer {
       max-height: 0; overflow: hidden;
@@ -292,7 +309,7 @@
       color: var(--text2); font-size: 0.93rem; line-height: 1.65;
     }
     .faq-item.open .faq-answer { max-height: 300px; padding: 0 1.5rem 1.25rem; }
-    .faq-item.open .chevron { transform: rotate(180deg); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
 
     /* ── FINAL CTA ── */
     .cta-section { text-align: center; }
@@ -445,6 +462,23 @@
       gap: 1rem;
     }
 
+    /* skeleton loader */
+    .session-skeleton {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.25rem 1.5rem;
+      display: flex; gap: 1.25rem; align-items: flex-start;
+    }
+    .skel-block {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0%   { opacity: 0.5; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+
     .session-card {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -456,6 +490,7 @@
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .session-card::before {
@@ -478,6 +513,8 @@
       box-shadow: 0 0 0 1px rgba(124,58,237,0.15), 0 4px 20px rgba(124,58,237,0.08);
     }
     .session-card.happening::before { opacity: 1; }
+
+    .session-card.past { opacity: 0.55; }
 
     .session-date-badge {
       display: flex;
@@ -546,6 +583,11 @@
     .session-status {
       font-size: 0.73rem; font-weight: 600;
       padding: 0.2rem 0.6rem; border-radius: 100px;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
     }
 
     .session-status.live {
@@ -553,6 +595,7 @@
       color: #f87171;
       border: 1px solid rgba(239,68,68,0.25);
     }
+    .session-status.live .status-dot { background: #f87171; animation: pulse 1.5s infinite; }
 
     .session-status.open {
       background: rgba(74,222,128,0.1);
@@ -562,6 +605,12 @@
 
     .session-status.full {
       background: rgba(160,160,180,0.08);
+      color: var(--text2);
+      border: 1px solid var(--border);
+    }
+
+    .session-status.past {
+      background: rgba(160,160,180,0.06);
       color: var(--text2);
       border: 1px solid var(--border);
     }
@@ -577,6 +626,11 @@
       flex-wrap: wrap;
       font-size: 0.82rem;
       color: var(--text2);
+      align-items: center;
+    }
+
+    .session-details span {
+      display: inline-flex; align-items: center; gap: 0.35rem;
     }
 
     .cal-disclaimer {
@@ -603,7 +657,7 @@
     .cal-nav-btn {
       background: transparent; border: 1px solid var(--border);
       color: var(--text2); width: 28px; height: 28px; border-radius: 6px;
-      cursor: pointer; font-size: 1.2rem; line-height: 1; padding: 0;
+      cursor: pointer; padding: 0;
       display: flex; align-items: center; justify-content: center;
       transition: all 0.15s; font-family: inherit;
     }
@@ -623,18 +677,56 @@
     .spot-bar-fill.full { background: rgba(160,160,180,0.35); }
 
     /* ── SESSION EXPAND ── */
-    .session-card { cursor: pointer; }
-    .session-expand { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-    .session-card.active .session-expand { max-height: 240px; }
+    .session-expand { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .session-card.active .session-expand { max-height: 600px; }
     .session-card.active { border-color: var(--accent2) !important; box-shadow: 0 8px 32px rgba(124,58,237,0.15) !important; }
     .session-card.hackathon-card.active { border-color: var(--accent3) !important; box-shadow: 0 8px 32px rgba(249,115,22,0.15) !important; }
     .session-expand-inner { padding-top: 0.9rem; border-top: 1px solid var(--border); margin-top: 0.85rem; }
     .session-expand-desc { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 0.8rem; }
-    .session-format { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .session-format { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .format-chip { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 6px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
-    .session-expand-cta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.82rem; font-weight: 600; color: var(--accent2); text-decoration: none; transition: color 0.2s; }
-    .session-expand-cta:hover { color: var(--text); }
     .no-sessions { text-align: center; color: var(--text2); font-size: 0.9rem; padding: 3rem 1rem; font-style: italic; }
+
+    /* ── REGISTRATION FORM ── */
+    .reg-form-wrap {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.1rem;
+    }
+    .reg-form-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent2);
+      margin-bottom: 0.65rem; display: block;
+    }
+    .reg-form-row {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .reg-input {
+      flex: 1; min-width: 150px;
+      padding: 0.6rem 0.85rem; border-radius: 8px;
+      background: var(--bg2); color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 0.875rem; font-family: inherit;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .reg-input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 2px rgba(124,58,237,0.18);
+    }
+    .reg-btn {
+      padding: 0.6rem 1.1rem; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border: none; cursor: pointer;
+      font-size: 0.875rem; font-weight: 700; font-family: inherit;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .reg-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .reg-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .reg-feedback {
+      margin-top: 0.55rem; font-size: 0.8rem; min-height: 1.2rem;
+    }
+    .reg-feedback.success { color: #4ade80; }
+    .reg-feedback.error   { color: #f87171; }
 
     /* ── PARTNERS ── */
     .partners-section { background: var(--bg2); border-top: 1px solid var(--border); }
@@ -683,6 +775,7 @@
       .waitlist-form input[type="email"] { width: 100%; }
       .hero-stats { gap: 1.75rem; }
       .session-details { gap: 0.7rem; }
+      .reg-form-row { flex-direction: column; }
     }
   </style>
 </head>
@@ -738,19 +831,19 @@
       <div class="steps-grid">
         <div class="step-card reveal">
           <div class="step-num">01 / ANTES</div>
-          <span class="step-icon">🎯</span>
+          <div class="step-icon"><i data-lucide="target" width="22" height="22"></i></div>
           <h3>Declarás tu objetivo</h3>
           <p>Al inicio de cada sesión le decís al grupo qué vas a entregar. Un commit, una landing, una funcionalidad. Específico. Medible. Concreto.</p>
         </div>
         <div class="step-card reveal">
           <div class="step-num">02 / DURANTE</div>
-          <span class="step-icon">⚡</span>
+          <div class="step-icon"><i data-lucide="zap" width="22" height="22"></i></div>
           <h3>Sprint en grupo</h3>
           <p>Todos construyen en paralelo, cámaras encendidas. El silencio productivo del grupo te mantiene enfocado. No hay lugar para scrollear Instagram.</p>
         </div>
         <div class="step-card reveal">
           <div class="step-num">03 / AL FINAL</div>
-          <span class="step-icon">🚀</span>
+          <div class="step-icon"><i data-lucide="rocket" width="22" height="22"></i></div>
           <h3>Mostrás lo que hiciste</h3>
           <p>5 minutos, cada uno muestra su entrega. No importa si es pequeño. Lo que importa es que existe. El grupo lo ve. Eso cambia todo.</p>
         </div>
@@ -766,32 +859,32 @@
       <p class="section-subtitle reveal">No es magia. Es psicología aplicada: presión social positiva + deadline real + comunidad que avanza.</p>
       <div class="why-grid">
         <div class="why-card reveal">
-          <span class="why-icon">🔒</span>
+          <div class="why-icon"><i data-lucide="lock" width="18" height="18"></i></div>
           <h3>Compromiso público</h3>
           <p>Cuando le decís a un grupo qué vas a hacer, el costo de no hacerlo sube. Simple y brutalmente efectivo.</p>
         </div>
         <div class="why-card reveal">
-          <span class="why-icon">⏱️</span>
+          <div class="why-icon"><i data-lucide="timer" width="18" height="18"></i></div>
           <h3>Deadline real</h3>
           <p>Sin fecha límite, nada pasa. Con una sesión programada, de repente encontrás el tiempo que "no tenías".</p>
         </div>
         <div class="why-card reveal">
-          <span class="why-icon">👥</span>
+          <div class="why-icon"><i data-lucide="users" width="18" height="18"></i></div>
           <h3>No estás solo</h3>
           <p>Todos en la sala tienen proyectos parados. El contexto compartido genera energía que no podés recrear solo en tu cuarto.</p>
         </div>
         <div class="why-card reveal">
-          <span class="why-icon">📈</span>
+          <div class="why-icon"><i data-lucide="trending-up" width="18" height="18"></i></div>
           <h3>Progreso visible</h3>
           <p>Semana tras semana, tu proyecto crece. La acumulación de sesiones convierte ideas en productos reales.</p>
         </div>
         <div class="why-card reveal">
-          <span class="why-icon">🤝</span>
+          <div class="why-icon"><i data-lucide="handshake" width="18" height="18"></i></div>
           <h3>Comunidad que construye</h3>
           <p>Conocés a gente en el mismo momento del camino. No mentores, no inversores. Builders, como vos.</p>
         </div>
         <div class="why-card reveal">
-          <span class="why-icon">🔁</span>
+          <div class="why-icon"><i data-lucide="repeat" width="18" height="18"></i></div>
           <h3>Recurrencia</h3>
           <p>No es un evento de una vez. Es un ritmo. La recurrencia es lo que convierte intenciones en hábitos.</p>
         </div>
@@ -816,9 +909,13 @@
         <!-- Mini calendar (rendered by JS) -->
         <div class="cal-mini">
           <div class="cal-header">
-            <button class="cal-nav-btn" id="calPrev">‹</button>
+            <button class="cal-nav-btn" id="calPrev">
+              <i data-lucide="chevron-left" width="16" height="16"></i>
+            </button>
             <span class="cal-month-label" id="calMonthLabel"></span>
-            <button class="cal-nav-btn" id="calNext">›</button>
+            <button class="cal-nav-btn" id="calNext">
+              <i data-lucide="chevron-right" width="16" height="16"></i>
+            </button>
           </div>
           <div class="cal-grid" id="calGrid"></div>
           <div class="cal-legend">
@@ -828,10 +925,26 @@
         </div>
 
         <!-- Session cards (rendered by JS) -->
-        <div class="sessions-list" id="sessionsList"></div>
+        <div class="sessions-list" id="sessionsList">
+          <!-- skeleton -->
+          <div class="session-skeleton">
+            <div class="skel-block" style="width:52px;height:72px;border-radius:10px;flex-shrink:0"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:0.6rem;">
+              <div class="skel-block" style="width:120px;height:14px"></div>
+              <div class="skel-block" style="width:80%;height:18px"></div>
+              <div class="skel-block" style="width:60%;height:12px"></div>
+            </div>
+          </div>
+          <div class="session-skeleton">
+            <div class="skel-block" style="width:52px;height:72px;border-radius:10px;flex-shrink:0"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:0.6rem;">
+              <div class="skel-block" style="width:100px;height:14px"></div>
+              <div class="skel-block" style="width:70%;height:18px"></div>
+              <div class="skel-block" style="width:50%;height:12px"></div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <p class="cal-disclaimer reveal">* Maqueta ilustrativa — el calendario real se confirma con la comunidad fundadora.</p>
     </div>
   </section>
 
@@ -884,23 +997,23 @@
       <h2 class="section-title reveal">Lo que todos preguntan.</h2>
       <div class="faq-list reveal">
         <div class="faq-item">
-          <div class="faq-question">¿Necesito saber programar? <span class="chevron">▾</span></div>
+          <div class="faq-question">¿Necesito saber programar? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
           <div class="faq-answer">No. Hackr es para cualquier tipo de proyecto: apps, negocios, contenido, arte, servicios. Lo único que necesitás es tener algo que querés construir y las ganas de hacerlo.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">¿Cuánto duran las sesiones? <span class="chevron">▾</span></div>
+          <div class="faq-question">¿Cuánto duran las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
           <div class="faq-answer">Las sesiones estándar duran 3 horas con estructura clara: 10 min de check-in, 2h 20min de sprint, 30 min de demos. También habrá hackathons de fin de semana para proyectos más ambiciosos.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">¿Con qué frecuencia son las sesiones? <span class="chevron">▾</span></div>
+          <div class="faq-question">¿Con qué frecuencia son las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
           <div class="faq-answer">El plan es ofrecer sesiones semanales en horarios fijos para que puedas hacer de esto un hábito, más sesiones extra los fines de semana. Los detalles exactos los vamos a confirmar con la primera comunidad.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">¿Tiene costo? <span class="chevron">▾</span></div>
+          <div class="faq-question">¿Tiene costo? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
           <div class="faq-answer">Las primeras sesiones son gratuitas para los early adopters de la lista. El modelo de negocio final será membresía mensual para acceso ilimitado, pero los que entren ahora van a tener condiciones especiales.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">¿Dónde son las sesiones? <span class="chevron">▾</span></div>
+          <div class="faq-question">¿Dónde son las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div>
           <div class="faq-answer">Online por videollamada. Así podés unirte desde donde estés, y podemos armar un grupo con gente de toda la región.</div>
         </div>
       </div>
@@ -927,6 +1040,9 @@
   </footer>
 
   <script>
+    // ── Lucide icons ──
+    lucide.createIcons();
+
     // ── Scroll reveal ──
     const reveals = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
@@ -958,9 +1074,9 @@
         });
         const data = await res.json();
         if (res.ok) {
-          feedbackEl.textContent = '🎉 ¡Estás dentro! Te avisamos cuando lancemos.';
+          feedbackEl.textContent = '¡Estás dentro! Te avisamos cuando lancemos.';
           feedbackEl.className = 'form-feedback success';
-          btnEl.textContent = '✓ Anotado';
+          btnEl.textContent = 'Anotado';
           btnEl.style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
         } else {
           feedbackEl.textContent = data.error || 'Algo salió mal. Intentá de nuevo.';
@@ -992,34 +1108,55 @@
       const DAY_SHORT    = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
       const MON_SHORT    = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
 
-      const sessions = [
-        { id:1,  date:'2026-04-03', type:'weekly',   num:'#01',   title:'Kick-off de la comunidad',        time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:12, total:15, status:'live', desc:'Primera sesión oficial. Presentaciones, declaramos objetivos, sprints con cámaras encendidas y la primera ronda de demos.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-        { id:2,  date:'2026-04-10', type:'weekly',   num:'#02',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:8,  total:15, status:'open', desc:'Check-in grupal, sprint de 2h20 con cámaras encendidas y 5 min de demo por persona. Llegás con tu objetivo, te vas con algo hecho.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-        { id:3,  date:'2026-04-17', type:'weekly',   num:'#03',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:5,  total:15, status:'open', desc:'Seguimos el ritmo. Esta semana más gente del waitlist entra al grupo.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-        { id:4,  date:'2026-04-19', type:'hackathon', num:'HK·01', title:'Build in 1 Day: de 0 a lanzado', time:'10:00 – 20:00 CLT', duration:'10 horas', spots:6,  total:20, status:'open', desc:'El objetivo: lanzar algo real antes de las 20:00. Mañana de ideación, tarde de sprint intenso, cierre con demos y feedback del grupo.', format:['Mañana: ideación','Tarde: sprint duro','18:00 demos + feedback'] },
-        { id:5,  date:'2026-04-24', type:'weekly',   num:'#04',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:0,  total:15, status:'full', desc:'Sesión completa. Anotate al waitlist para asegurar tu lugar en las próximas sesiones.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-        { id:6,  date:'2026-05-08', type:'weekly',   num:'#05',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Segunda semana de mayo. El proyecto avanza semana a semana.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-        { id:7,  date:'2026-05-15', type:'weekly',   num:'#06',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Formato estándar. Declarás tu objetivo, sprinteás, mostrás.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-        { id:8,  date:'2026-05-17', type:'hackathon', num:'HK·02', title:'Hackathon × Platanus Ventures',  time:'10:00 – 20:00 CLT', duration:'10 horas', spots:25, total:25, status:'open', desc:'En colaboración con Platanus Ventures. Los mejores proyectos reciben feedback directo del equipo de inversión. Las ideas más interesantes entran en su radar.', format:['Mañana: ideación','Tarde: sprint duro','18:30 demos ante Platanus'] },
-        { id:9,  date:'2026-05-22', type:'weekly',   num:'#07',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Penúltima sesión del mes. Seguimos construyendo.', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-        { id:10, date:'2026-05-29', type:'weekly',   num:'#08',   title:'Sesión Semanal',                  time:'19:00 – 22:00 CLT', duration:'3 horas',  spots:15, total:15, status:'open', desc:'Cierre de mayo. ¿Cuánto construiste este mes?', format:['10 min check-in','2h 20min sprint','30 min demos'] },
-      ];
-
-      let curYear = 2026, curMonth = 3; // Abril (0-indexed)
-      let activeFilter = 'all';
+      let allSessions   = [];
+      let curYear       = new Date().getFullYear();
+      let curMonth      = new Date().getMonth();
+      let activeFilter  = 'all';
       let activeSessionId = null;
-      const MIN = { year:2026, month:3 }, MAX = { year:2026, month:4 };
+      let minYear = curYear, minMonth = curMonth;
+      let maxYear = curYear, maxMonth = curMonth;
 
-      const calGridEl   = document.getElementById('calGrid');
-      const calLabel    = document.getElementById('calMonthLabel');
-      const calPrevBtn  = document.getElementById('calPrev');
-      const calNextBtn  = document.getElementById('calNext');
-      const sessionsEl  = document.getElementById('sessionsList');
+      const calGridEl  = document.getElementById('calGrid');
+      const calLabel   = document.getElementById('calMonthLabel');
+      const calPrevBtn = document.getElementById('calPrev');
+      const calNextBtn = document.getElementById('calNext');
+      const sessionsEl = document.getElementById('sessionsList');
+
+      // ── Fetch sessions from API ──
+      async function loadSessions() {
+        try {
+          const res = await fetch('/api/sessions');
+          if (!res.ok) throw new Error('fetch failed');
+          allSessions = await res.json();
+
+          if (allSessions.length) {
+            const dates = allSessions.map(s => s.session_date);
+            const first = dates[0].split('-');
+            const last  = dates[dates.length - 1].split('-');
+            minYear = +first[0]; minMonth = +first[1] - 1;
+            maxYear = +last[0];  maxMonth = +last[1] - 1;
+
+            // Start on first upcoming month (or first month with sessions)
+            const today = new Date().toISOString().slice(0, 10);
+            const upcoming = allSessions.find(s => s.session_date >= today);
+            if (upcoming) {
+              const d = upcoming.session_date.split('-');
+              curYear = +d[0]; curMonth = +d[1] - 1;
+            } else {
+              curYear = minYear; curMonth = minMonth;
+            }
+          }
+        } catch {
+          allSessions = [];
+        }
+        renderCal();
+        renderSessions();
+      }
 
       function forMonth(y, m) {
-        return sessions.filter(s => {
-          const d = new Date(s.date + 'T12:00:00');
-          return d.getFullYear() === y && d.getMonth() === m;
+        return allSessions.filter(s => {
+          const d = s.session_date.split('-');
+          return +d[0] === y && +d[1] - 1 === m;
         });
       }
 
@@ -1030,23 +1167,25 @@
 
       function renderCal() {
         calLabel.textContent = MONTH_LABELS[curMonth] + ' ' + curYear;
-        calPrevBtn.disabled = (curYear === MIN.year && curMonth === MIN.month);
-        calNextBtn.disabled = (curYear === MAX.year && curMonth === MAX.month);
+        calPrevBtn.disabled = (curYear === minYear && curMonth === minMonth);
+        calNextBtn.disabled = (curYear === maxYear && curMonth === maxMonth);
 
         const ms = forMonth(curYear, curMonth);
         const byDay = {};
-        ms.forEach(s => { byDay[+s.date.split('-')[2]] = s; });
-        // Día 20 abril = día 2 del hackathon HK·01
-        if (curYear === 2026 && curMonth === 3) byDay[20] = { type:'hackathon', id:4 };
+        ms.forEach(s => { byDay[+s.session_date.split('-')[2]] = s; });
 
         const daysInMonth = new Date(curYear, curMonth + 1, 0).getDate();
         const firstDay    = new Date(curYear, curMonth, 1).getDay();
+        const todayStr    = new Date().toISOString().slice(0, 10);
+        const todayDay    = new Date().getDate();
+        const todayYear   = new Date().getFullYear();
+        const todayMonth  = new Date().getMonth();
 
         let html = DAY_NAMES.map(d => `<div class="cal-day-name">${d}</div>`).join('');
         for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
 
         for (let d = 1; d <= daysInMonth; d++) {
-          const isToday = (curYear === 2026 && curMonth === 3 && d === 3);
+          const isToday = (curYear === todayYear && curMonth === todayMonth && d === todayDay);
           const s = byDay[d];
           let cls = 'cal-day';
           if (isToday) cls += ' today';
@@ -1063,9 +1202,43 @@
         for (let i = 0; i < rem; i++) html += '<div class="cal-day empty"></div>';
 
         calGridEl.innerHTML = html;
+        // Re-init lucide icons inside calendar
+        lucide.createIcons({ nodes: [calGridEl] });
         calGridEl.querySelectorAll('.cal-day[data-sid]').forEach(el => {
           el.addEventListener('click', () => selectSession(+el.dataset.sid));
         });
+      }
+
+      function statusHTML(s) {
+        if (s.status === 'live') {
+          return `<span class="session-status live"><span class="status-dot"></span>Hoy en vivo</span>`;
+        }
+        if (s.status === 'past') {
+          return `<span class="session-status past">Finalizada</span>`;
+        }
+        if (s.status === 'full') {
+          return `<span class="session-status full">Completa</span>`;
+        }
+        return `<span class="session-status open">Abierta</span>`;
+      }
+
+      function regFormHTML(s) {
+        if (s.status === 'past') return '';
+        if (s.status === 'full') {
+          return `<div class="reg-form-wrap">
+            <p style="font-size:0.82rem;color:var(--text2);">Esta sesión está completa. Anotate al waitlist para no perderte la siguiente.</p>
+            <a href="#waitlist" class="reg-btn" style="display:inline-block;margin-top:0.6rem;text-decoration:none;border-radius:8px;padding:0.6rem 1.1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:0.875rem;font-weight:700;">Waitlist →</a>
+          </div>`;
+        }
+        return `<div class="reg-form-wrap" id="reg-wrap-${s.id}">
+          <span class="reg-form-label">Reservar mi lugar</span>
+          <div class="reg-form-row">
+            <input class="reg-input" type="text"  placeholder="Tu nombre (opcional)" id="reg-name-${s.id}" />
+            <input class="reg-input" type="email" placeholder="tu@email.com"         id="reg-email-${s.id}" required />
+            <button class="reg-btn" id="reg-btn-${s.id}" onclick="registerSession(event, ${s.id})">Reservar →</button>
+          </div>
+          <div class="reg-feedback" id="reg-fb-${s.id}"></div>
+        </div>`;
       }
 
       function renderSessions() {
@@ -1075,20 +1248,20 @@
           return;
         }
         sessionsEl.innerHTML = list.map(s => {
-          const dt      = new Date(s.date + 'T12:00:00');
+          const dt      = new Date(s.session_date + 'T12:00:00');
           const dayName = DAY_SHORT[dt.getDay()].toUpperCase();
           const dayNum  = String(dt.getDate()).padStart(2, '0');
           const monStr  = MON_SHORT[dt.getMonth()];
           const isActive = s.id === activeSessionId;
-          const pct = s.status === 'full' ? 100 : Math.round(((s.total - s.spots) / s.total) * 100);
-          const spotsLabel = s.status === 'full' ? `${s.total} / ${s.total} lugares` : `${s.total - s.spots} / ${s.total} lugares`;
-          const statusHtml = s.status === 'live' ? '<span class="session-status live">🔴 Hoy</span>'
-            : s.status === 'full' ? '<span class="session-status full">Completa</span>'
-            : '<span class="session-status open">Abierta</span>';
-          const ctaText = s.status === 'full' ? 'Avisame cuando haya lugar →' : 'Quiero un lugar →';
-          const chips = s.format.map(f => `<span class="format-chip">${f}</span>`).join('');
+          const registered = s.registered_count || 0;
+          const total = s.max_spots;
+          const pct = s.status === 'full' ? 100 : Math.round((registered / total) * 100);
+          const spotsLabel = s.status === 'full'
+            ? `${total} / ${total} lugares`
+            : `${registered} / ${total} lugares`;
+          const chips = (Array.isArray(s.format) ? s.format : []).map(f => `<span class="format-chip">${f}</span>`).join('');
 
-          return `<div class="session-card ${s.status==='live'?'happening':'upcoming'} ${s.type==='hackathon'?'hackathon-card':''} ${isActive?'active':''}" data-sid="${s.id}">
+          return `<div class="session-card ${s.status==='live'?'happening':''} ${s.status==='past'?'past':''} ${s.type==='hackathon'?'hackathon-card':''} ${isActive?'active':''}" data-sid="${s.id}">
   <div class="session-date-badge ${s.type==='hackathon'?'hackathon-badge':'weekly'}">
     <span class="s-day">${dayName}</span>
     <span class="s-num">${dayNum}</span>
@@ -1097,31 +1270,34 @@
   <div class="session-info">
     <div class="session-meta">
       <span class="session-tag ${s.type}">${s.type==='hackathon'?'Hackathon':'Sesión Semanal'}</span>
-      ${statusHtml}
+      ${statusHTML(s)}
     </div>
     <h3 class="session-title">${s.num} — ${s.title}</h3>
     <div class="session-details">
-      <span>🕖 ${s.time}</span>
-      <span>⏱ ${s.duration}</span>
-      <span>👥 ${spotsLabel}</span>
+      <span><i data-lucide="clock" width="13" height="13"></i>${s.start_time} – ${s.end_time} CLT</span>
+      <span><i data-lucide="timer" width="13" height="13"></i>${s.type==='hackathon'?'10 horas':'3 horas'}</span>
+      <span><i data-lucide="users" width="13" height="13"></i>${spotsLabel}</span>
     </div>
     <div class="spot-bar-wrap">
       <div class="spot-bar-fill ${s.status==='full'?'full':s.type}" style="width:${pct}%"></div>
     </div>
     <div class="session-expand">
       <div class="session-expand-inner">
-        <p class="session-expand-desc">${s.desc}</p>
-        <div class="session-format">${chips}</div>
-        <a href="#waitlist" class="session-expand-cta">${ctaText}</a>
+        <p class="session-expand-desc">${s.description}</p>
+        ${chips ? `<div class="session-format">${chips}</div>` : ''}
+        ${regFormHTML(s)}
       </div>
     </div>
   </div>
 </div>`;
         }).join('');
 
+        // Init lucide icons in rendered cards
+        lucide.createIcons({ nodes: [sessionsEl] });
+
         sessionsEl.querySelectorAll('.session-card').forEach(card => {
           card.addEventListener('click', e => {
-            if (e.target.closest('a')) return;
+            if (e.target.closest('a,button,input')) return;
             const sid = +card.dataset.sid;
             selectSession(activeSessionId === sid ? null : sid);
           });
@@ -1139,13 +1315,13 @@
       }
 
       calPrevBtn.addEventListener('click', () => {
-        if (curYear === MIN.year && curMonth === MIN.month) return;
+        if (curYear === minYear && curMonth === minMonth) return;
         if (--curMonth < 0) { curMonth = 11; curYear--; }
         activeSessionId = null; renderCal(); renderSessions();
       });
 
       calNextBtn.addEventListener('click', () => {
-        if (curYear === MAX.year && curMonth === MAX.month) return;
+        if (curYear === maxYear && curMonth === maxMonth) return;
         if (++curMonth > 11) { curMonth = 0; curYear++; }
         activeSessionId = null; renderCal(); renderSessions();
       });
@@ -1160,9 +1336,59 @@
         });
       });
 
-      renderCal();
-      renderSessions();
+      loadSessions();
     })();
+
+    // ── Session registration ──
+    window.registerSession = async function(e, sessionId) {
+      e.stopPropagation();
+      const btn      = document.getElementById(`reg-btn-${sessionId}`);
+      const emailEl  = document.getElementById(`reg-email-${sessionId}`);
+      const nameEl   = document.getElementById(`reg-name-${sessionId}`);
+      const feedback = document.getElementById(`reg-fb-${sessionId}`);
+
+      const email = emailEl ? emailEl.value.trim() : '';
+      const name  = nameEl  ? nameEl.value.trim()  : '';
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        feedback.textContent = 'Ingresá un email válido.';
+        feedback.className = 'reg-feedback error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Reservando…';
+      feedback.textContent = '';
+      feedback.className = 'reg-feedback';
+
+      try {
+        const res = await fetch(`/api/sessions/${sessionId}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name: name || undefined }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          feedback.textContent = data.message || 'Lugar reservado. Revisá tu bandeja.';
+          feedback.className = 'reg-feedback success';
+          btn.textContent = 'Reservado';
+          btn.style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
+          if (emailEl) emailEl.disabled = true;
+          if (nameEl)  nameEl.disabled  = true;
+        } else {
+          feedback.textContent = data.error || 'Algo salió mal. Intentá de nuevo.';
+          feedback.className = 'reg-feedback error';
+          btn.disabled = false;
+          btn.textContent = 'Reservar →';
+        }
+      } catch {
+        feedback.textContent = 'Error de conexión. Intentá de nuevo.';
+        feedback.className = 'reg-feedback error';
+        btn.disabled = false;
+        btn.textContent = 'Reservar →';
+      }
+    };
   </script>
 </body>
 </html>
