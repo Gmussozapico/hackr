@@ -39,9 +39,14 @@ async function initDB() {
       password_hash TEXT NOT NULL,
       plan          TEXT NOT NULL DEFAULT 'free',
       sessions_used INTEGER NOT NULL DEFAULT 0,
+      is_admin      BOOLEAN NOT NULL DEFAULT FALSE,
       created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `);
+  // Migraciones: columnas nuevas en users
+  await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin      BOOLEAN  NOT NULL DEFAULT FALSE`).catch(() => {});
+  await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS plan          TEXT     NOT NULL DEFAULT 'free'`).catch(() => {});
+  await query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS sessions_used INTEGER  NOT NULL DEFAULT 0`).catch(() => {});
   await query(`
     CREATE TABLE IF NOT EXISTS sessions (
       id               SERIAL PRIMARY KEY,
@@ -65,6 +70,26 @@ async function initDB() {
       UNIQUE(session_id, user_id)
     )
   `);
+  // Migraciones: columnas nuevas en sessions (schema antiguo → nuevo)
+  await query(`ALTER TABLE sessions ADD COLUMN IF NOT EXISTS date             TIMESTAMPTZ`).catch(() => {});
+  await query(`ALTER TABLE sessions ADD COLUMN IF NOT EXISTS duration_minutes INTEGER DEFAULT 180`).catch(() => {});
+  await query(`ALTER TABLE sessions ADD COLUMN IF NOT EXISTS max_participants INTEGER DEFAULT 15`).catch(() => {});
+  await query(`ALTER TABLE sessions ADD COLUMN IF NOT EXISTS location         TEXT`).catch(() => {});
+  await query(`ALTER TABLE sessions ADD COLUMN IF NOT EXISTS created_by       INTEGER REFERENCES users(id)`).catch(() => {});
+  // Hacer nullable columnas heredadas del schema antiguo (no requeridas en sesiones nuevas)
+  await query(`ALTER TABLE sessions ALTER COLUMN num          DROP NOT NULL`).catch(() => {});
+  await query(`ALTER TABLE sessions ALTER COLUMN session_date DROP NOT NULL`).catch(() => {});
+  await query(`ALTER TABLE sessions ALTER COLUMN start_time   DROP NOT NULL`).catch(() => {});
+  await query(`ALTER TABLE sessions ALTER COLUMN end_time     DROP NOT NULL`).catch(() => {});
+  // Eliminar check constraint que solo permite 'weekly' | 'hackathon'
+  await query(`ALTER TABLE sessions DROP CONSTRAINT IF EXISTS sessions_type_check`).catch(() => {});
+  // Migrar datos: session_date + start_time → date
+  await query(`UPDATE sessions SET date = (session_date + start_time)::timestamptz WHERE date IS NULL AND session_date IS NOT NULL AND start_time IS NOT NULL`).catch(() => {});
+  // Migrar datos: max_spots → max_participants
+  await query(`UPDATE sessions SET max_participants = max_spots WHERE max_spots IS NOT NULL AND (max_participants IS NULL OR max_participants = 15)`).catch(() => {});
+
+  // Migración: user_id en registrations si existía tabla anterior sin FK
+  await query(`ALTER TABLE registrations ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE`).catch(() => {});
   console.log('✅ DB tables ready');
 }
 
@@ -81,7 +106,11 @@ const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, standardHeade
 
 // ── AUTH HELPERS ──
 function signToken(user) {
-  return jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign(
+    { id: user.id, email: user.email, name: user.name, is_admin: user.is_admin || false },
+    JWT_SECRET,
+    { expiresIn: '30d' }
+  );
 }
 function setTokenCookie(res, token) {
   res.cookie('hackr_token', token, {
@@ -103,6 +132,19 @@ function optionalAuth(req, res, next) {
     if (token) req.user = jwt.verify(token, JWT_SECRET);
   } catch {}
   next();
+}
+
+async function requireAdmin(req, res, next) {
+  try {
+    const token = req.cookies.hackr_token || (req.headers.authorization || '').replace('Bearer ', '');
+    if (!token) return res.status(401).json({ error: 'No autorizado.' });
+    const decoded = jwt.verify(token, JWT_SECRET);
+    // Verificar en DB siempre (más seguro que confiar solo en el JWT)
+    const result = await query('SELECT is_admin FROM users WHERE id = $1', [decoded.id]);
+    if (!result.rows[0]?.is_admin) return res.status(403).json({ error: 'Acceso denegado. Se requieren permisos de administrador.' });
+    req.user = decoded;
+    next();
+  } catch { return res.status(401).json({ error: 'Sesión expirada.' }); }
 }
 
 // ══════════════════════════════════════
@@ -172,7 +214,7 @@ app.post('/api/auth/logout', (req, res) => {
 // GET /api/auth/me
 app.get('/api/auth/me', requireAuth, async (req, res) => {
   try {
-    const result = await query('SELECT id, name, email, plan, sessions_used, created_at FROM users WHERE id = $1', [req.user.id]);
+    const result = await query('SELECT id, name, email, plan, sessions_used, is_admin, created_at FROM users WHERE id = $1', [req.user.id]);
     const user = result.rows[0];
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado.' });
     return res.json({ user });
@@ -250,33 +292,63 @@ app.post('/api/sessions/:id/register', requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/sessions/my — user's sessions
+// GET /api/sessions/my — user's sessions (debe ir ANTES de /:id)
 app.get('/api/sessions/my', requireAuth, async (req, res) => {
   try {
     const result = await query(`
-      SELECT s.* FROM sessions s
-      INNER JOIN registrations r ON r.session_id = s.id
-      WHERE r.user_id = $1
-      ORDER BY s.date DESC
+      SELECT s.*, COUNT(r2.id) AS registered
+      FROM sessions s
+      INNER JOIN registrations r ON r.session_id = s.id AND r.user_id = $1
+      LEFT JOIN registrations r2 ON r2.session_id = s.id
+      GROUP BY s.id
+      ORDER BY s.date DESC NULLS LAST
     `, [req.user.id]);
     return res.json(result.rows);
   } catch { return res.status(500).json({ error: 'Error interno.' }); }
 });
 
-// POST /api/sessions (admin only)
-app.post('/api/sessions', requireAuth, async (req, res) => {
-  const secret = process.env.ADMIN_SECRET || 'hackr-admin';
-  if (req.headers['x-admin-key'] !== secret) return res.status(403).json({ error: 'Forbidden.' });
+// POST /api/sessions — crear sesión (solo admin)
+app.post('/api/sessions', requireAdmin, async (req, res) => {
   const { title, description, date, duration_minutes, max_participants, type, location } = req.body;
   if (!title) return res.status(400).json({ error: 'Título requerido.' });
   try {
     const result = await query(
       'INSERT INTO sessions (title, description, date, duration_minutes, max_participants, type, location, created_by) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
-      [title, description, date, duration_minutes || 180, max_participants || 15, type || 'online', location, req.user.id]
+      [title, description || '', date || null, duration_minutes || 180, max_participants || 15, type || 'online', location || null, req.user.id]
     );
     return res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error('Create session error:', err);
+    return res.status(500).json({ error: 'Error interno.' });
+  }
+});
+
+// PUT /api/sessions/:id — editar sesión (solo admin)
+app.put('/api/sessions/:id', requireAdmin, async (req, res) => {
+  const { title, description, date, duration_minutes, max_participants, type, location } = req.body;
+  if (!title) return res.status(400).json({ error: 'Título requerido.' });
+  try {
+    const result = await query(
+      `UPDATE sessions SET title=$1, description=$2, date=$3, duration_minutes=$4,
+       max_participants=$5, type=$6, location=$7 WHERE id=$8 RETURNING *`,
+      [title, description || '', date || null, duration_minutes || 180, max_participants || 15, type || 'online', location || null, req.params.id]
+    );
+    if (!result.rows[0]) return res.status(404).json({ error: 'Sesión no encontrada.' });
+    return res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Update session error:', err);
+    return res.status(500).json({ error: 'Error interno.' });
+  }
+});
+
+// DELETE /api/sessions/:id — eliminar sesión (solo admin)
+app.delete('/api/sessions/:id', requireAdmin, async (req, res) => {
+  try {
+    const result = await query('DELETE FROM sessions WHERE id=$1 RETURNING id', [req.params.id]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'Sesión no encontrada.' });
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error('Delete session error:', err);
     return res.status(500).json({ error: 'Error interno.' });
   }
 });
@@ -319,6 +391,96 @@ app.get('/api/waitlist/export', async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="hackr-waitlist.csv"');
     return res.send(csv);
   } catch { return res.status(500).json({ error: 'Error interno.' }); }
+});
+
+// ══════════════════════════════════════
+// ADMIN ROUTES
+// ══════════════════════════════════════
+
+// POST /api/admin/promote — promover usuario a admin (requiere ADMIN_SECRET)
+app.post('/api/admin/promote', async (req, res) => {
+  const { email, secret } = req.body;
+  const ADMIN_SECRET = process.env.ADMIN_SECRET || 'hackr-admin';
+  if (secret !== ADMIN_SECRET) return res.status(403).json({ error: 'Clave incorrecta.' });
+  try {
+    const result = await query(
+      'UPDATE users SET is_admin = TRUE WHERE LOWER(email) = LOWER($1) RETURNING id, name, email, is_admin',
+      [email.trim()]
+    );
+    if (!result.rows[0]) return res.status(404).json({ error: 'Usuario no encontrado. Asegúrate de registrarte primero.' });
+    return res.json({ ok: true, user: result.rows[0] });
+  } catch (err) {
+    console.error('Promote error:', err);
+    return res.status(500).json({ error: 'Error interno.' });
+  }
+});
+
+// GET /api/admin/sessions — todas las sesiones (incluyendo pasadas)
+app.get('/api/admin/sessions', requireAdmin, async (req, res) => {
+  try {
+    const result = await query(`
+      SELECT s.*, COUNT(r.id) AS registered
+      FROM sessions s
+      LEFT JOIN registrations r ON r.session_id = s.id
+      GROUP BY s.id
+      ORDER BY s.date DESC NULLS LAST, s.created_at DESC
+    `);
+    return res.json(result.rows);
+  } catch (err) {
+    console.error('Admin sessions error:', err);
+    return res.status(500).json({ error: 'Error interno.' });
+  }
+});
+
+// GET /api/admin/sessions/:id/participants — participantes de una sesión
+app.get('/api/admin/sessions/:id/participants', requireAdmin, async (req, res) => {
+  try {
+    const result = await query(`
+      SELECT u.id, u.name, u.email, u.plan, r.created_at AS registered_at
+      FROM registrations r
+      JOIN users u ON u.id = r.user_id
+      WHERE r.session_id = $1
+      ORDER BY r.created_at ASC
+    `, [req.params.id]);
+    return res.json(result.rows);
+  } catch (err) {
+    console.error('Participants error:', err);
+    return res.status(500).json({ error: 'Error interno.' });
+  }
+});
+
+// GET /api/admin/users — todos los usuarios
+app.get('/api/admin/users', requireAdmin, async (req, res) => {
+  try {
+    const result = await query(`
+      SELECT id, name, email, plan, sessions_used, is_admin, created_at
+      FROM users ORDER BY created_at DESC
+    `);
+    return res.json(result.rows);
+  } catch (err) {
+    console.error('Admin users error:', err);
+    return res.status(500).json({ error: 'Error interno.' });
+  }
+});
+
+// GET /api/admin/stats — resumen general
+app.get('/api/admin/stats', requireAdmin, async (req, res) => {
+  try {
+    const [users, sessions, registrations, waitlist] = await Promise.all([
+      query('SELECT COUNT(*) FROM users'),
+      query('SELECT COUNT(*) FROM sessions'),
+      query('SELECT COUNT(*) FROM registrations'),
+      query('SELECT COUNT(*) FROM waitlist'),
+    ]);
+    return res.json({
+      users:         parseInt(users.rows[0].count),
+      sessions:      parseInt(sessions.rows[0].count),
+      registrations: parseInt(registrations.rows[0].count),
+      waitlist:      parseInt(waitlist.rows[0].count),
+    });
+  } catch (err) {
+    return res.status(500).json({ error: 'Error interno.' });
+  }
 });
 
 // ── CATCH-ALL ──

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Hackr</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --bg2: #12121a; --bg3: #1a1a26;
+      --accent: #7c3aed; --accent2: #a855f7; --accent3: #f97316;
+      --text: #f1f0ff; --text2: #a09db8; --text3: #6b6888;
+      --border: rgba(124,58,237,0.25); --glow: rgba(124,58,237,0.15);
+      --green: #4ade80; --red: #f87171; --yellow: #fbbf24;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── HEADER ── */
+    header {
+      background: rgba(10,10,15,0.95); border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.75rem; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
+    }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .logo { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; background: linear-gradient(135deg,#a855f7,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .header-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); background: rgba(124,58,237,0.12); border: 1px solid var(--border); padding: 0.2rem 0.6rem; border-radius: 6px; }
+    .header-user { display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: var(--text2); }
+    .header-avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg,var(--accent),var(--accent3)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; }
+    .btn-logout { background: transparent; border: 1px solid var(--border); color: var(--text2); padding: 0.35rem 0.75rem; border-radius: 7px; font-size: 0.8rem; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 0.35rem; transition: border-color 0.2s, color 0.2s; }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; flex: 1; }
+    .sidebar { width: 220px; background: var(--bg2); border-right: 1px solid var(--border); padding: 1.5rem 0.75rem; display: flex; flex-direction: column; gap: 0.3rem; flex-shrink: 0; }
+    .nav-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.6rem 0.85rem; border-radius: 9px; color: var(--text2); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background 0.15s, color 0.15s; border: none; background: transparent; font-family: inherit; width: 100%; text-align: left; }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: rgba(124,58,237,0.12); color: var(--accent2); }
+    .nav-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); padding: 0.75rem 0.85rem 0.25rem; }
+    .main { flex: 1; padding: 2rem; overflow: auto; }
+
+    /* ── STATS ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+    .stat-card-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+    .stat-card-value { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg,var(--accent2),var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'JetBrains Mono', monospace; }
+
+    /* ── SECTION HEADER ── */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .section-title { font-size: 1.1rem; font-weight: 700; }
+    .btn-primary { background: linear-gradient(135deg,var(--accent),var(--accent3)); color: #fff; border: none; padding: 0.55rem 1.1rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 0.4rem; transition: opacity 0.2s, transform 0.15s; }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-sm { padding: 0.35rem 0.7rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 0.3rem; border: none; transition: all 0.15s; }
+    .btn-edit { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .btn-edit:hover { background: rgba(124,58,237,0.25); }
+    .btn-delete { background: rgba(248,113,113,0.12); color: var(--red); }
+    .btn-delete:hover { background: rgba(248,113,113,0.22); }
+    .btn-view { background: rgba(249,115,22,0.12); color: var(--accent3); }
+    .btn-view:hover { background: rgba(249,115,22,0.22); }
+
+    /* ── TABLE ── */
+    .table-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead { background: rgba(124,58,237,0.07); }
+    th { padding: 0.75rem 1rem; text-align: left; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text2); white-space: nowrap; }
+    td { padding: 0.85rem 1rem; border-top: 1px solid rgba(124,58,237,0.1); vertical-align: middle; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .td-actions { display: flex; gap: 0.5rem; white-space: nowrap; }
+    .badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.55rem; border-radius: 100px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; }
+    .badge-free { background: rgba(160,157,184,0.12); color: var(--text2); }
+    .badge-monthly { background: rgba(124,58,237,0.15); color: var(--accent2); }
+    .badge-annual { background: rgba(249,115,22,0.15); color: var(--accent3); }
+    .badge-admin { background: rgba(251,191,36,0.15); color: var(--yellow); }
+    .badge-online { background: rgba(74,222,128,0.1); color: var(--green); }
+    .badge-presencial { background: rgba(249,115,22,0.1); color: var(--accent3); }
+    .empty-row td { text-align: center; color: var(--text2); padding: 2.5rem; }
+
+    /* ── MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; padding: 2rem; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.5); }
+    .modal-wide { max-width: 760px; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: var(--text2); cursor: pointer; padding: 0.3rem; border-radius: 6px; }
+    .modal-close:hover { color: var(--text); background: var(--bg3); }
+    .modal-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+
+    /* ── FORM ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-grid.full { grid-template-columns: 1fr; }
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-field.span2 { grid-column: span 2; }
+    label { font-size: 0.78rem; font-weight: 600; color: var(--text2); letter-spacing: 0.03em; }
+    input, select, textarea { background: var(--bg3); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 0.65rem 0.85rem; font-size: 0.875rem; font-family: inherit; width: 100%; outline: none; transition: border-color 0.2s; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent2); }
+    textarea { resize: vertical; min-height: 80px; }
+    select option { background: var(--bg2); }
+    .form-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text2); padding: 0.55rem 1.1rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .btn-cancel:hover { border-color: var(--text2); color: var(--text); }
+    .form-error { font-size: 0.82rem; color: var(--red); margin-top: 0.5rem; min-height: 1.1rem; }
+
+    /* ── PARTICIPANTS ── */
+    .participants-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+    .participants-count { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text2); }
+
+    /* ── TAB VIEWS ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── AUTH GATE ── */
+    .auth-gate { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+    .auth-gate h2 { font-size: 1.5rem; font-weight: 800; }
+    .auth-gate p { color: var(--text2); }
+    .auth-gate a { color: var(--accent2); text-decoration: none; font-weight: 600; }
+    .auth-gate a:hover { text-decoration: underline; }
+
+    /* ── LOADING ── */
+    .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent2); border-radius: 50%; animation: spin 0.6s linear infinite; margin: 2rem auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1.1rem; font-size: 0.875rem; z-index: 999; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.4); transform: translateY(20px); opacity: 0; transition: all 0.25s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-color: rgba(74,222,128,0.3); }
+    .toast.error   { border-color: rgba(248,113,113,0.3); }
+  </style>
+</head>
+<body>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- AUTH GATE (se muestra si no es admin) -->
+  <div class="auth-gate" id="authGate" style="display:none">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;background:linear-gradient(135deg,#a855f7,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent">hackr_</div>
+    <h2 id="gateTitle">Verificando acceso…</h2>
+    <p id="gateMsg"></p>
+    <a href="/" id="gateLink" style="display:none">← Volver al inicio</a>
+  </div>
+
+  <!-- PANEL PRINCIPAL -->
+  <div id="adminPanel" style="display:none; flex-direction:column; flex:1">
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-left">
+        <a href="/" class="logo">hackr_</a>
+        <span class="header-badge">Admin</span>
+      </div>
+      <div class="header-user">
+        <div class="header-avatar" id="headerAvatar">?</div>
+        <span id="headerName"></span>
+        <button class="btn-logout" onclick="logout()">
+          <i data-lucide="log-out" width="13" height="13"></i>Salir
+        </button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <nav class="sidebar">
+        <span class="nav-section-label">Panel</span>
+        <button class="nav-item active" onclick="showView('dashboard')" id="navDashboard">
+          <i data-lucide="layout-dashboard" width="16" height="16"></i>Resumen
+        </button>
+        <span class="nav-section-label">Contenido</span>
+        <button class="nav-item" onclick="showView('sessions')" id="navSessions">
+          <i data-lucide="calendar" width="16" height="16"></i>Sesiones
+        </button>
+        <button class="nav-item" onclick="showView('users')" id="navUsers">
+          <i data-lucide="users" width="16" height="16"></i>Usuarios
+        </button>
+      </nav>
+
+      <!-- MAIN -->
+      <main class="main">
+
+        <!-- DASHBOARD -->
+        <div class="view active" id="viewDashboard">
+          <div class="section-header">
+            <h1 class="section-title">Resumen</h1>
+          </div>
+          <div class="stats-grid" id="statsGrid">
+            <div class="spinner"></div>
+          </div>
+        </div>
+
+        <!-- SESSIONS -->
+        <div class="view" id="viewSessions">
+          <div class="section-header">
+            <h1 class="section-title">Sesiones</h1>
+            <button class="btn-primary" onclick="openSessionModal()">
+              <i data-lucide="plus" width="15" height="15"></i>Nueva sesión
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sesión</th>
+                  <th>Fecha</th>
+                  <th>Tipo</th>
+                  <th>Inscritos</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="sessionsTableBody">
+                <tr><td colspan="5"><div class="spinner"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- USERS -->
+        <div class="view" id="viewUsers">
+          <div class="section-header">
+            <h1 class="section-title">Usuarios</h1>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Plan</th>
+                  <th>Sesiones</th>
+                  <th>Registro</th>
+                  <th>Rol</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr><td colspan="5"><div class="spinner"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: CREAR / EDITAR SESIÓN -->
+  <div class="modal-overlay" id="sessionModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeSessionModal()"><i data-lucide="x" width="18" height="18"></i></button>
+      <div class="modal-title" id="sessionModalTitle">Nueva sesión</div>
+      <div class="form-grid">
+        <div class="form-field span2">
+          <label for="fTitle">Título</label>
+          <input type="text" id="fTitle" placeholder="Ej: #05 — Sesión Semanal" />
+        </div>
+        <div class="form-field span2">
+          <label for="fDescription">Descripción</label>
+          <textarea id="fDescription" placeholder="Descripción de la sesión…"></textarea>
+        </div>
+        <div class="form-field">
+          <label for="fDate">Fecha y hora</label>
+          <input type="datetime-local" id="fDate" />
+        </div>
+        <div class="form-field">
+          <label for="fDuration">Duración (min)</label>
+          <input type="number" id="fDuration" placeholder="180" min="30" max="600" />
+        </div>
+        <div class="form-field">
+          <label for="fMaxParticipants">Máx. participantes</label>
+          <input type="number" id="fMaxParticipants" placeholder="15" min="1" max="100" />
+        </div>
+        <div class="form-field">
+          <label for="fType">Tipo</label>
+          <select id="fType">
+            <option value="online">Online</option>
+            <option value="presencial">Presencial</option>
+            <option value="hackathon">Hackathon</option>
+          </select>
+        </div>
+        <div class="form-field span2">
+          <label for="fLocation">Ubicación (opcional)</label>
+          <input type="text" id="fLocation" placeholder="Ej: Awake Las Condes / meet.google.com/xxx" />
+        </div>
+      </div>
+      <div class="form-error" id="sessionFormError"></div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeSessionModal()">Cancelar</button>
+        <button class="btn-primary" id="sessionFormSubmit" onclick="submitSessionForm()">
+          <i data-lucide="save" width="15" height="15"></i>Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PARTICIPANTES -->
+  <div class="modal-overlay" id="participantsModal">
+    <div class="modal modal-wide">
+      <button class="modal-close" onclick="closeParticipants()"><i data-lucide="x" width="18" height="18"></i></button>
+      <div class="participants-header">
+        <div>
+          <div class="modal-title" id="participantsTitle" style="margin-bottom:0.25rem">Participantes</div>
+          <span class="participants-count" id="participantsCount"></span>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Plan</th>
+              <th>Se inscribió</th>
+            </tr>
+          </thead>
+          <tbody id="participantsTableBody">
+            <tr><td colspan="5"><div class="spinner"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Estado ──
+    let currentUser   = null;
+    let editingSession = null; // null = crear, número = editar
+
+    // ── Init ──
+    async function init() {
+      lucide.createIcons();
+      document.getElementById('authGate').style.display = 'flex';
+
+      try {
+        const res  = await fetch('/api/auth/me', { credentials: 'include' });
+        const data = await res.json();
+
+        if (!res.ok || !data.user) {
+          showGate('Acceso restringido', 'Debes iniciar sesión para acceder al panel de administración.', true);
+          return;
+        }
+        if (!data.user.is_admin) {
+          showGate('Sin permisos', 'Tu cuenta no tiene permisos de administrador.', true);
+          return;
+        }
+
+        currentUser = data.user;
+        document.getElementById('authGate').style.display = 'none';
+        const panel = document.getElementById('adminPanel');
+        panel.style.display = 'flex';
+        lucide.createIcons(); // re-init after panel shows
+
+        const initials = currentUser.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+        document.getElementById('headerAvatar').textContent = initials;
+        document.getElementById('headerName').textContent   = currentUser.name.split(' ')[0];
+
+        loadDashboard();
+        loadSessions();
+        loadUsers();
+
+      } catch {
+        showGate('Error de conexión', 'No se pudo conectar al servidor.', true);
+      }
+    }
+
+    function showGate(title, msg, showLink) {
+      document.getElementById('gateTitle').textContent = title;
+      document.getElementById('gateMsg').textContent   = msg;
+      if (showLink) document.getElementById('gateLink').style.display = '';
+    }
+
+    // ── Nav ──
+    function showView(name) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById(`view${name.charAt(0).toUpperCase()+name.slice(1)}`).classList.add('active');
+      document.getElementById(`nav${name.charAt(0).toUpperCase()+name.slice(1)}`).classList.add('active');
+    }
+
+    // ── Logout ──
+    async function logout() {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      window.location.href = '/';
+    }
+
+    // ── Dashboard ──
+    async function loadDashboard() {
+      try {
+        const res  = await fetch('/api/admin/stats', { credentials: 'include' });
+        const data = await res.json();
+        document.getElementById('statsGrid').innerHTML = `
+          <div class="stat-card">
+            <div class="stat-card-label">Usuarios</div>
+            <div class="stat-card-value">${data.users}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Sesiones</div>
+            <div class="stat-card-value">${data.sessions}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Inscripciones</div>
+            <div class="stat-card-value">${data.registrations}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Waitlist</div>
+            <div class="stat-card-value">${data.waitlist}</div>
+          </div>
+        `;
+        lucide.createIcons();
+      } catch {
+        document.getElementById('statsGrid').innerHTML = '<p style="color:var(--red);font-size:0.875rem">Error al cargar estadísticas.</p>';
+      }
+    }
+
+    // ── Sessions ──
+    let allSessions = [];
+
+    async function loadSessions() {
+      try {
+        const res  = await fetch('/api/admin/sessions', { credentials: 'include' });
+        allSessions = await res.json();
+        renderSessions();
+      } catch {
+        document.getElementById('sessionsTableBody').innerHTML = '<tr class="empty-row"><td colspan="5">Error al cargar sesiones.</td></tr>';
+      }
+    }
+
+    function renderSessions() {
+      const tbody = document.getElementById('sessionsTableBody');
+      if (!allSessions.length) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No hay sesiones todavía. Crea la primera.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allSessions.map(s => {
+        const dateStr = s.date ? new Date(s.date).toLocaleString('es-CL', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
+        const spotsLeft = s.max_participants - parseInt(s.registered || 0);
+        const typeClass = s.type === 'presencial' ? 'badge-presencial' : 'badge-online';
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:600">${escHtml(s.title)}</div>
+              ${s.description ? `<div style="font-size:0.78rem;color:var(--text2);margin-top:0.2rem">${escHtml(s.description.slice(0,60))}${s.description.length>60?'…':''}</div>` : ''}
+            </td>
+            <td style="white-space:nowrap;color:var(--text2)">${dateStr}</td>
+            <td><span class="badge ${typeClass}">${s.type}</span></td>
+            <td>
+              <span style="font-weight:600;color:${spotsLeft===0?'var(--red)':'var(--green)'}">${s.registered||0}</span>
+              <span style="color:var(--text2)"> / ${s.max_participants}</span>
+            </td>
+            <td>
+              <div class="td-actions">
+                <button class="btn-sm btn-view" onclick="openParticipants(${s.id}, '${escHtml(s.title).replace(/'/g,"\\'")}', ${s.registered||0}, ${s.max_participants})">
+                  <i data-lucide="users" width="12" height="12"></i>Ver
+                </button>
+                <button class="btn-sm btn-edit" onclick="openSessionModal(${s.id})">
+                  <i data-lucide="pencil" width="12" height="12"></i>Editar
+                </button>
+                <button class="btn-sm btn-delete" onclick="deleteSession(${s.id}, '${escHtml(s.title).replace(/'/g,"\\'")}')">
+                  <i data-lucide="trash-2" width="12" height="12"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // ── Session modal ──
+    function openSessionModal(sessionId) {
+      editingSession = sessionId || null;
+      document.getElementById('sessionFormError').textContent = '';
+      document.getElementById('sessionModalTitle').textContent = editingSession ? 'Editar sesión' : 'Nueva sesión';
+      document.getElementById('sessionFormSubmit').innerHTML = `<i data-lucide="save" width="15" height="15"></i>${editingSession ? 'Guardar cambios' : 'Crear sesión'}`;
+
+      if (editingSession) {
+        const s = allSessions.find(s => s.id === editingSession);
+        if (s) {
+          document.getElementById('fTitle').value          = s.title || '';
+          document.getElementById('fDescription').value    = s.description || '';
+          document.getElementById('fDuration').value       = s.duration_minutes || 180;
+          document.getElementById('fMaxParticipants').value = s.max_participants || 15;
+          document.getElementById('fType').value           = s.type || 'online';
+          document.getElementById('fLocation').value       = s.location || '';
+          document.getElementById('fDate').value           = s.date ? s.date.slice(0,16) : '';
+        }
+      } else {
+        document.getElementById('fTitle').value           = '';
+        document.getElementById('fDescription').value     = '';
+        document.getElementById('fDate').value            = '';
+        document.getElementById('fDuration').value        = 180;
+        document.getElementById('fMaxParticipants').value = 15;
+        document.getElementById('fType').value            = 'online';
+        document.getElementById('fLocation').value        = '';
+      }
+
+      document.getElementById('sessionModal').classList.add('open');
+      lucide.createIcons();
+      setTimeout(() => document.getElementById('fTitle').focus(), 100);
+    }
+
+    function closeSessionModal() {
+      document.getElementById('sessionModal').classList.remove('open');
+      editingSession = null;
+    }
+
+    async function submitSessionForm() {
+      const btn   = document.getElementById('sessionFormSubmit');
+      const errEl = document.getElementById('sessionFormError');
+      errEl.textContent = '';
+
+      const body = {
+        title:            document.getElementById('fTitle').value.trim(),
+        description:      document.getElementById('fDescription').value.trim() || null,
+        date:             document.getElementById('fDate').value || null,
+        duration_minutes: parseInt(document.getElementById('fDuration').value) || 180,
+        max_participants: parseInt(document.getElementById('fMaxParticipants').value) || 15,
+        type:             document.getElementById('fType').value,
+        location:         document.getElementById('fLocation').value.trim() || null,
+      };
+
+      if (!body.title) { errEl.textContent = 'El título es obligatorio.'; return; }
+
+      btn.disabled = true;
+      try {
+        const url    = editingSession ? `/api/sessions/${editingSession}` : '/api/sessions';
+        const method = editingSession ? 'PUT' : 'POST';
+        const res    = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), credentials: 'include' });
+        const data   = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Error al guardar.'; return; }
+        closeSessionModal();
+        showToast(editingSession ? 'Sesión actualizada.' : 'Sesión creada.', 'success');
+        await loadSessions();
+        await loadDashboard();
+      } catch {
+        errEl.textContent = 'Error de conexión.';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function deleteSession(id, title) {
+      if (!confirm(`¿Eliminar "${title}"? Esta acción no se puede deshacer.`)) return;
+      try {
+        const res = await fetch(`/api/sessions/${id}`, { method: 'DELETE', credentials: 'include' });
+        const data = await res.json();
+        if (!res.ok) { showToast(data.error || 'Error al eliminar.', 'error'); return; }
+        showToast('Sesión eliminada.', 'success');
+        await loadSessions();
+        await loadDashboard();
+      } catch {
+        showToast('Error de conexión.', 'error');
+      }
+    }
+
+    // ── Participants ──
+    async function openParticipants(sessionId, title, registered, maxParticipants) {
+      document.getElementById('participantsTitle').textContent = title;
+      document.getElementById('participantsCount').textContent = `${registered} / ${maxParticipants} lugares`;
+      document.getElementById('participantsTableBody').innerHTML = '<tr><td colspan="5"><div class="spinner"></div></td></tr>';
+      document.getElementById('participantsModal').classList.add('open');
+
+      try {
+        const res  = await fetch(`/api/admin/sessions/${sessionId}/participants`, { credentials: 'include' });
+        const data = await res.json();
+
+        if (!data.length) {
+          document.getElementById('participantsTableBody').innerHTML = '<tr class="empty-row"><td colspan="5">No hay participantes registrados.</td></tr>';
+          return;
+        }
+
+        document.getElementById('participantsTableBody').innerHTML = data.map((p, i) => `
+          <tr>
+            <td style="color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:0.8rem">${String(i+1).padStart(2,'0')}</td>
+            <td style="font-weight:600">${escHtml(p.name)}</td>
+            <td style="color:var(--text2)">${escHtml(p.email)}</td>
+            <td><span class="badge badge-${p.plan}">${p.plan}</span></td>
+            <td style="color:var(--text2);font-size:0.82rem">${new Date(p.registered_at).toLocaleString('es-CL', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}</td>
+          </tr>
+        `).join('');
+      } catch {
+        document.getElementById('participantsTableBody').innerHTML = '<tr class="empty-row"><td colspan="5">Error al cargar participantes.</td></tr>';
+      }
+    }
+
+    function closeParticipants() {
+      document.getElementById('participantsModal').classList.remove('open');
+    }
+
+    // ── Users ──
+    async function loadUsers() {
+      try {
+        const res   = await fetch('/api/admin/users', { credentials: 'include' });
+        const users = await res.json();
+        const tbody = document.getElementById('usersTableBody');
+
+        if (!users.length) {
+          tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No hay usuarios registrados.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = users.map(u => `
+          <tr>
+            <td>
+              <div style="font-weight:600">${escHtml(u.name)}</div>
+              <div style="font-size:0.78rem;color:var(--text2)">${escHtml(u.email)}</div>
+            </td>
+            <td><span class="badge badge-${u.plan}">${u.plan}</span></td>
+            <td style="font-family:'JetBrains Mono',monospace;font-size:0.85rem">${u.sessions_used}</td>
+            <td style="color:var(--text2);font-size:0.82rem">${new Date(u.created_at).toLocaleDateString('es-CL', { day:'2-digit', month:'short', year:'numeric' })}</td>
+            <td>${u.is_admin ? '<span class="badge badge-admin">Admin</span>' : '<span style="color:var(--text3);font-size:0.8rem">—</span>'}</td>
+          </tr>
+        `).join('');
+      } catch {
+        document.getElementById('usersTableBody').innerHTML = '<tr class="empty-row"><td colspan="5">Error al cargar usuarios.</td></tr>';
+      }
+    }
+
+    // ── Helpers ──
+    function escHtml(str) {
+      return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className   = `toast ${type} show`;
+      setTimeout(() => { t.classList.remove('show'); }, 3000);
+    }
+
+    // ── Cerrar modales con Escape ──
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeSessionModal(); closeParticipants(); }
+    });
+    document.getElementById('sessionModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSessionModal(); });
+    document.getElementById('participantsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeParticipants(); });
+
+    // ── Arrancar ──
+    init();
+  </script>
+</body>
+</html>
