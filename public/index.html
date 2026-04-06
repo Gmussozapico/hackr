@@ -161,6 +161,56 @@
     .cta-section h2 { font-size: clamp(2rem,4.5vw,3.2rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1.25rem; }
     .cta-section p { color: var(--text2); font-size: 1.05rem; margin-bottom: 2.5rem; }
 
+    /* ── PROOF BAR ── */
+    .proof-bar { background: rgba(124,58,237,0.07); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.85rem 1.5rem; }
+    .proof-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 1.75rem; flex-wrap: wrap; }
+    .proof-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.83rem; color: var(--text2); white-space: nowrap; }
+    .proof-item strong { color: var(--text); font-weight: 600; }
+    .proof-item .proof-icon { color: var(--accent2); display: flex; flex-shrink: 0; }
+    .proof-sep { color: var(--border); font-size: 1.2rem; }
+    @media (max-width: 640px) { .proof-sep { display: none; } .proof-bar-inner { gap: 0.85rem; justify-content: flex-start; } }
+
+    /* ── TESTIMONIALS ── */
+    .testi-section { background: var(--bg); }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.25rem; margin-top: 3.5rem; }
+    .testi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; display: flex; flex-direction: column; gap: 1rem; transition: transform 0.2s, border-color 0.2s; }
+    .testi-card:hover { transform: translateY(-3px); border-color: rgba(168,85,247,0.4); }
+    .testi-stars { display: flex; gap: 2px; color: var(--accent3); }
+    .testi-text { color: var(--text2); font-size: 0.95rem; line-height: 1.7; flex: 1; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .testi-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; color: #fff; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
+    .testi-name { font-weight: 700; font-size: 0.875rem; }
+    .testi-role { color: var(--text2); font-size: 0.78rem; margin-top: 0.1rem; }
+
+    /* ── PRICING ── */
+    .pricing-section { background: var(--bg2); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-top: 3.5rem; align-items: start; }
+    @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 420px; } }
+    .pricing-card { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; gap: 0.9rem; position: relative; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 20px 60px rgba(124,58,237,0.2); background: linear-gradient(160deg,rgba(124,58,237,0.08) 0%,var(--bg) 60%); }
+    .popular-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,var(--accent),var(--accent3)); color: #fff; font-size: 0.68rem; font-weight: 800; padding: 0.28rem 0.9rem; border-radius: 100px; white-space: nowrap; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.3rem; }
+    .plan-name { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; }
+    .plan-price { display: flex; align-items: baseline; gap: 0.2rem; }
+    .plan-amount { font-size: 2.4rem; font-weight: 900; letter-spacing: -0.03em; color: var(--text); line-height: 1; }
+    .plan-amount.grad { background: linear-gradient(135deg,var(--accent2),var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .plan-currency { font-size: 0.85rem; color: var(--text2); font-weight: 600; align-self: flex-start; padding-top: 0.4rem; }
+    .plan-period { font-size: 0.78rem; color: var(--accent3); font-weight: 600; margin-top: -0.4rem; }
+    .plan-desc { font-size: 0.875rem; color: var(--text2); line-height: 1.55; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .plan-features { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+    .plan-features li { display: flex; align-items: flex-start; gap: 0.55rem; font-size: 0.86rem; color: var(--text); }
+    .plan-features li.off { color: var(--text2); opacity: 0.5; }
+    .plan-features .fi { flex-shrink: 0; margin-top: 1px; }
+    .plan-features .fi.on { color: var(--green); }
+    .plan-features .fi.no { color: var(--text2); }
+    .plan-btn { margin-top: auto; padding: 0.85rem; border-radius: 10px; font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; border: none; text-align: center; }
+    .plan-btn.primary { background: linear-gradient(135deg,var(--accent),var(--accent3)); color: #fff; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+    .plan-btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .plan-btn.outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .plan-btn.outline:hover { border-color: var(--accent2); }
+    .pricing-note { margin-top: 2rem; text-align: center; font-size: 0.85rem; color: var(--text2); display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    .pricing-note span { color: var(--accent2); font-weight: 600; }
+
     /* ── FOOTER ── */
     footer { padding: 2rem 1.5rem; text-align: center; border-top: 1px solid var(--border); color: var(--text2); font-size: 0.85rem; }
     footer .footer-logo { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; background: linear-gradient(135deg,#a855f7,#f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; margin-bottom: 0.6rem; }
@@ -382,6 +432,19 @@
     </div>
   </section>
 
+  <!-- PROOF BAR -->
+  <div class="proof-bar">
+    <div class="proof-bar-inner">
+      <div class="proof-item"><span class="proof-icon"><i data-lucide="check-circle" width="15" height="15"></i></span><strong>Sin requisitos técnicos</strong> — cualquier proyecto vale</div>
+      <span class="proof-sep">·</span>
+      <div class="proof-item"><span class="proof-icon"><i data-lucide="map-pin" width="15" height="15"></i></span><strong>Santiago, Chile</strong> — presencial y online</div>
+      <span class="proof-sep">·</span>
+      <div class="proof-item"><span class="proof-icon"><i data-lucide="gift" width="15" height="15"></i></span><strong>Primeras sesiones gratis</strong> para la comunidad fundadora</div>
+      <span class="proof-sep">·</span>
+      <div class="proof-item"><span class="proof-icon"><i data-lucide="package-check" width="15" height="15"></i></span><strong>Un entregable por sesión</strong> — siempre</div>
+    </div>
+  </div>
+
   <!-- HOW IT WORKS -->
   <section id="how">
     <div class="section-inner">
@@ -460,6 +523,68 @@
     </div>
   </section>
 
+  <!-- TESTIMONIALS -->
+  <section class="testi-section" id="testimonials">
+    <div class="section-inner">
+      <p class="section-label reveal">Comunidad</p>
+      <h2 class="section-title reveal">Lo que dice la gente.</h2>
+      <p class="section-subtitle reveal">Voces de quienes ya probaron el formato en la beta cerrada.</p>
+      <div class="testi-grid">
+        <div class="testi-card reveal">
+          <div class="testi-stars">
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+          </div>
+          <p class="testi-text">"Llevaba 6 meses con mi app 'casi lista'. En la primera sesión de Hackr terminé el onboarding y la subí al App Store. El grupo te hace sentir que no puedes volver sin algo."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">M</div>
+            <div>
+              <div class="testi-name">Matías R.</div>
+              <div class="testi-role">Fundador · App de finanzas personales</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="testi-stars">
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+          </div>
+          <p class="testi-text">"Creía que era para devs. Mi proyecto era un negocio de ropa. Igual funcionó perfecto — llegué con la web sin escribir, salí con todo publicado y el link compartido."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#f97316,#fb923c)">C</div>
+            <div>
+              <div class="testi-name">Camila V.</div>
+              <div class="testi-role">Emprendedora · Moda sostenible</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="testi-stars">
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+            <i data-lucide="star" width="14" height="14" style="fill:currentColor"></i>
+          </div>
+          <p class="testi-text">"El formato de mostrar lo que hiciste al final es lo que lo cambia todo. No puedo aparecer con nada. Esa presión, en el mejor sentido, me tiene avanzando semana a semana."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">D</div>
+            <div>
+              <div class="testi-name">Diego P.</div>
+              <div class="testi-role">Developer freelance · Producto propio</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PARTNERS -->
   <section class="partners-section" id="partners">
     <div class="section-inner">
@@ -494,6 +619,81 @@
         <div class="faq-item"><div class="faq-question">¿Tiene costo? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div><div class="faq-answer">Las primeras sesiones son gratuitas para los early adopters de la lista. El modelo de negocio final será membresía mensual para acceso ilimitado, pero los que entren ahora van a tener condiciones especiales.</div></div>
         <div class="faq-item"><div class="faq-question">¿Dónde son las sesiones? <span class="faq-chevron"><i data-lucide="chevron-down" width="18" height="18"></i></span></div><div class="faq-answer">Online por videollamada. Así puedes unirte desde donde estés, y podemos armar un grupo con gente de toda la región.</div></div>
       </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-section" id="pricing">
+    <div class="section-inner">
+      <p class="section-label reveal">Precios</p>
+      <h2 class="section-title reveal">Simple y directo.</h2>
+      <p class="section-subtitle reveal">Arrancamos con precios de early adopters. Los fundadores se quedan con ese precio para siempre.</p>
+      <div class="pricing-grid">
+
+        <!-- EXPLORADOR -->
+        <div class="pricing-card reveal">
+          <div class="plan-name">Explorador</div>
+          <div class="plan-price"><span class="plan-amount">Gratis</span></div>
+          <p class="plan-desc">Para conocer la comunidad y probar el formato antes de comprometerte.</p>
+          <ul class="plan-features">
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>2 sesiones de prueba</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Acceso a la comunidad Slack</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Check-in + sprint + demo</li>
+            <li class="off"><i class="fi no" data-lucide="minus" width="14" height="14"></i>Sesiones recurrentes semanales</li>
+            <li class="off"><i class="fi no" data-lucide="minus" width="14" height="14"></i>Acceso a hackathons de fin de semana</li>
+            <li class="off"><i class="fi no" data-lucide="minus" width="14" height="14"></i>Precio fundador bloqueado</li>
+          </ul>
+          <button class="plan-btn outline" onclick="openAuthModal('signup')">Empezar gratis</button>
+        </div>
+
+        <!-- BUILDER MENSUAL -->
+        <div class="pricing-card featured reveal">
+          <div class="popular-badge"><i data-lucide="zap" width="11" height="11" style="fill:currentColor"></i>MÁS POPULAR</div>
+          <div class="plan-name">Builder Mensual</div>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount grad">14.990</span>
+            <span class="plan-currency">CLP</span>
+          </div>
+          <p class="plan-period">≈ USD 16 · Precio fundador</p>
+          <p class="plan-desc">Para el que quiere hacer de esto un hábito y construir semana a semana.</p>
+          <ul class="plan-features">
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Sesiones semanales ilimitadas</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Acceso a hackathons de fin de semana</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Comunidad privada Slack</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Acceso presencial en spots partner</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Dashboard de progreso</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Precio fundador bloqueado</li>
+          </ul>
+          <button class="plan-btn primary" onclick="openAuthModal('signup')">Unirse ahora →</button>
+        </div>
+
+        <!-- BUILDER ANUAL -->
+        <div class="pricing-card reveal">
+          <div class="plan-name">Builder Anual</div>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount">99.990</span>
+            <span class="plan-currency">CLP</span>
+          </div>
+          <p class="plan-period" style="color:var(--accent3)">Ahorras $79.890 · 2 meses gratis</p>
+          <p class="plan-desc">Para el que está comprometido con su proyecto y quiere el mejor precio del mercado.</p>
+          <ul class="plan-features">
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Todo lo del plan mensual</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Acceso prioritario a nuevas sesiones</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>1 sesión 1:1 de accountability/mes</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Badge de fundador en el perfil</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Acceso beta a nuevas features</li>
+            <li><i class="fi on" data-lucide="check" width="14" height="14"></i>Precio fundador vitalicio</li>
+          </ul>
+          <button class="plan-btn outline" onclick="openAuthModal('signup')">Unirse al año</button>
+        </div>
+
+      </div>
+      <p class="pricing-note reveal">
+        <i data-lucide="lock" width="14" height="14"></i>
+        Los precios de early adopter se <span>congelan para siempre</span> para quienes entren ahora. El precio subirá cuando abramos al público general.
+      </p>
     </div>
   </section>
 
